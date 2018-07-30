@@ -32,6 +32,9 @@ body {
 .text-muted {
   color: #777777;
 }
+.text-near-white {
+  color: #c5c3c3;
+}
 .text-light {
   color: white;
 }
@@ -80,6 +83,9 @@ h6 {
 }
 .bg-darkest-gray {
   background-color: #222222;
+}
+.bg-darkest-gray-service {
+  background-color: #252525;
 }
 .btn-primary {
   color: white;
@@ -268,6 +274,9 @@ header .intro-text {
   padding-top: 100px;
   padding-bottom: 50px;
 }
+header .feature-sets{
+  margin-bottom: 200px;
+}
 header .intro-text .intro-lead-in {
   font-family: "Open Sans Light", Arial, Helvetica, sans-serif;
   font-style: italic;
@@ -285,7 +294,7 @@ header .intro-text .intro-heading {
 }
 @media (min-width: 768px) {
   header .intro-text {
-    padding-top: 300px;
+    padding-top: 100px;
     padding-bottom: 200px;
   }
   header .intro-text .intro-lead-in {
@@ -771,4 +780,41 @@ img::-moz-selection {
 }
 body {
   webkit-tap-highlight-color: #204a87;
+}
+
+
+/*    Carousel Fade Transition   */
+
+#fade-feature-carousel.carousel {
+padding-bottom: 40px;
+}
+#fade-feature-carousel.carousel .carousel-inner .item {
+opacity: 0;
+-webkit-transition-property: opacity;
+    -ms-transition-property: opacity;
+        transition-property: opacity;
+}
+#fade-feature-carousel.carousel .carousel-inner .active {
+opacity: 1;
+-webkit-transition-property: opacity;
+    -ms-transition-property: opacity;
+        transition-property: opacity;
+}
+#fade-feature-carousel.carousel .carousel-indicators {
+margin-bottom: -10px;
+}
+#fade-feature-carousel.carousel .carousel-indicators > li {
+background-color: #e84a64;
+border: none;
+}
+#fade-feature-carousel blockquote {
+  text-align: center;
+  border: none;
+}
+#fade-feature-carousel .feature-circle {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  border-radius: 140px;
+  margin-bottom: 20px;
 }
