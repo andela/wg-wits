@@ -51,11 +51,13 @@ class ExerciseCommentEditView(WgerFormMixin,
     permission_required = 'exercises.change_exercisecomment'
 
     def get_success_url(self):
-        return reverse('exercise:exercise:view', kwargs={'id': self.object.exercise.id})
+        return reverse('exercise:exercise:view', kwargs={
+                       'id': self.object.exercise.id})
 
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
-        context = super(ExerciseCommentEditView, self).get_context_data(**kwargs)
+        context = super(ExerciseCommentEditView,
+                        self).get_context_data(**kwargs)
         context['form_action'] = reverse('exercise:comment:edit',
                                          kwargs={'pk': self.object.id})
 
@@ -76,11 +78,13 @@ class ExerciseCommentAddView(WgerFormMixin,
     permission_required = 'exercises.add_exercisecomment'
 
     def form_valid(self, form):
-        form.instance.exercise = Exercise.objects.get(pk=self.kwargs['exercise_pk'])
+        form.instance.exercise = Exercise.objects.get(
+            pk=self.kwargs['exercise_pk'])
         return super(ExerciseCommentAddView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('exercise:exercise:view', kwargs={'id': self.object.exercise.id})
+        return reverse('exercise:exercise:view', kwargs={
+                       'id': self.object.exercise.id})
 
     def get_context_data(self, **kwargs):
         '''
@@ -100,4 +104,5 @@ def delete(request, id):
     exercise_id = comment.exercise.id
     comment.delete()
 
-    return HttpResponseRedirect(reverse('exercise:exercise:view', kwargs={'id': exercise_id}))
+    return HttpResponseRedirect(
+        reverse('exercise:exercise:view', kwargs={'id': exercise_id}))

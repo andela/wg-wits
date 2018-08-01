@@ -72,13 +72,15 @@ def pagination(paginator, page):
     if paginator.num_pages > PAGINATION_MAX_TOTAL_PAGES:
 
         start_page = page.number - PAGINATION_PAGES_AROUND_CURRENT
-        for i in range(page.number - PAGINATION_PAGES_AROUND_CURRENT, page.number + 1):
+        for i in range(
+                page.number - PAGINATION_PAGES_AROUND_CURRENT, page.number + 1):
             if i > 0:
                 start_page = i
                 break
 
         end_page = page.number + PAGINATION_PAGES_AROUND_CURRENT
-        for i in range(page.number, page.number + PAGINATION_PAGES_AROUND_CURRENT):
+        for i in range(page.number, page.number +
+                       PAGINATION_PAGES_AROUND_CURRENT):
             if i > paginator.num_pages:
                 end_page = i
                 break
@@ -210,7 +212,8 @@ class SpacelessNode(template.base.Node):
     def render(self, context):
         if settings.WGER_SETTINGS['REMOVE_WHITESPACE']:
             from django.utils.html import strip_spaces_between_tags
-            return strip_spaces_between_tags(self.nodelist.render(context).strip())
+            return strip_spaces_between_tags(
+                self.nodelist.render(context).strip())
         else:
             return self.nodelist.render(context)
 

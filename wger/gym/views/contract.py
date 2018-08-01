@@ -35,7 +35,8 @@ from wger.gym.models import Contract, Gym
 logger = logging.getLogger(__name__)
 
 
-class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AddView(WgerFormMixin, LoginRequiredMixin,
+              PermissionRequiredMixin, CreateView):
     '''
     View to add a new contract
     '''
@@ -124,7 +125,8 @@ class DetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         return super(DetailView, self).dispatch(request, *args, **kwargs)
 
 
-class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class UpdateView(WgerFormMixin, LoginRequiredMixin,
+                 PermissionRequiredMixin, UpdateView):
     '''
     View to update an existing contract
     '''

@@ -28,8 +28,9 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-SECRET_KEY = os.environ.get("SECRET_KEY",
-                            "M34IvcJr1hpe437YzS29nVCiWqT4MgpxH8SfiXNzPI5oSP8uLYXOIZ")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "M34IvcJr1hpe437YzS29nVCiWqT4MgpxH8SfiXNzPI5oSP8uLYXOIZ")
 
 #
 # Application definition
@@ -116,7 +117,8 @@ MIDDLEWARE_CLASSES = (
     # Javascript Header. Sends helper headers for AJAX
     'wger.utils.middleware.JavascriptAJAXRedirectionMiddleware',
 
-    # Custom authentication middleware. Creates users on-the-fly for certain paths
+    # Custom authentication middleware. Creates users on-the-fly for certain
+    # paths
     'wger.utils.middleware.WgerAuthenticationMiddleware',
 
     # Send an appropriate Header so search engines don't index pages
@@ -342,7 +344,8 @@ else:
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('wger.utils.permissions.WgerPermission',),
     'PAGINATE_BY': 20,
-    'PAGINATE_BY_PARAM': 'limit',  # Allow client to override, using `?limit=xxx`.
+    # Allow client to override, using `?limit=xxx`.
+    'PAGINATE_BY_PARAM': 'limit',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',

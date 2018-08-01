@@ -40,6 +40,9 @@ install:
   - pip install -r requirements_devel.txt
   - pip install coverage
   - pip install coveralls
+  - pip install flake8
+  - npm install -g gulp@3.9.1
+  - npm install
 
   # Setup application
   - invoke create-settings --database-type postgresql
@@ -51,6 +54,10 @@ before_script:
 
 # Do the tests
 script:
+#Formating
+  - flake8 wger
+#Javascript linting
+  - gulp lint
   # Regular application
   - coverage run --source='.' ./manage.py test
 

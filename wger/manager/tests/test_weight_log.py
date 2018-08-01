@@ -251,14 +251,14 @@ class WeightlogTestCase(WorkoutManagerTestCase):
         workout2 = Workout.objects.get(pk=2)
 
         WorkoutLog.objects.all().delete()
-        l = WorkoutLog()
-        l.user = user1
-        l.date = datetime.date(2014, 1, 5)
-        l.exercise = Exercise.objects.get(pk=1)
-        l.workout = workout1
-        l.weight = 10
-        l.reps = 10
-        l.save()
+        log = WorkoutLog()
+        log.user = user1
+        log.date = datetime.date(2014, 1, 5)
+        log.exercise = Exercise.objects.get(pk=1)
+        log.workout = workout1
+        log.weight = 10
+        log.reps = 10
+        log.save()
 
         session1 = WorkoutSession()
         session1.user = user1
@@ -284,7 +284,7 @@ class WeightlogTestCase(WorkoutManagerTestCase):
         session3.date = datetime.date(2014, 1, 5)
         session3.save()
 
-        self.assertEqual(l.get_workout_session(), session1)
+        self.assertEqual(log.get_workout_session(), session1)
 
 
 class WeightLogDeleteTestCase(WorkoutManagerDeleteTestCase):
@@ -307,7 +307,8 @@ class WeightLogEntryEditTestCase(WorkoutManagerTestCase):
         Helper function to test edit log entries
         '''
 
-        response = self.client.get(reverse('manager:log:edit', kwargs={'pk': 1}))
+        response = self.client.get(
+            reverse('manager:log:edit', kwargs={'pk': 1}))
         if fail:
             self.assertTrue(response.status_code in (302, 403))
 
@@ -373,7 +374,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         self.user_login('admin')
         self.assertFalse(cache.get(cache_mapper.get_workout_log_list(log_hash)))
 
-        self.client.get(reverse('manager:workout:calendar', kwargs={'year': 2012, 'month': 10}))
+        self.client.get(reverse('manager:workout:calendar',
+                                kwargs={'year': 2012, 'month': 10}))
         self.assertTrue(cache.get(cache_mapper.get_workout_log_list(log_hash)))
 
     def test_calendar_day(self):
@@ -424,7 +426,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log_hash = hash((1, 2012, 10))
         log_hash_day = hash((1, 2012, 10, 1))
         self.user_login('admin')
-        self.client.get(reverse('manager:workout:calendar', kwargs={'year': 2012, 'month': 10}))
+        self.client.get(reverse('manager:workout:calendar',
+                                kwargs={'year': 2012, 'month': 10}))
         self.client.get(reverse('manager:workout:calendar-day', kwargs={'username': 'admin',
                                                                         'year': 2012,
                                                                         'month': 10,
@@ -435,7 +438,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log.save()
 
         self.assertFalse(cache.get(cache_mapper.get_workout_log_list(log_hash)))
-        self.assertFalse(cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
+        self.assertFalse(
+            cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
 
     def test_cache_update_log_2(self):
         '''
@@ -444,7 +448,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log_hash = hash((1, 2012, 10))
         log_hash_day = hash((1, 2012, 10, 1))
         self.user_login('admin')
-        self.client.get(reverse('manager:workout:calendar', kwargs={'year': 2012, 'month': 10}))
+        self.client.get(reverse('manager:workout:calendar',
+                                kwargs={'year': 2012, 'month': 10}))
         self.client.get(reverse('manager:workout:calendar-day', kwargs={'username': 'admin',
                                                                         'year': 2012,
                                                                         'month': 10,
@@ -455,7 +460,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log.save()
 
         self.assertTrue(cache.get(cache_mapper.get_workout_log_list(log_hash)))
-        self.assertTrue(cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
+        self.assertTrue(
+            cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
 
     def test_cache_delete_log(self):
         '''
@@ -464,7 +470,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log_hash = hash((1, 2012, 10))
         log_hash_day = hash((1, 2012, 10, 1))
         self.user_login('admin')
-        self.client.get(reverse('manager:workout:calendar', kwargs={'year': 2012, 'month': 10}))
+        self.client.get(reverse('manager:workout:calendar',
+                                kwargs={'year': 2012, 'month': 10}))
         self.client.get(reverse('manager:workout:calendar-day', kwargs={'username': 'admin',
                                                                         'year': 2012,
                                                                         'month': 10,
@@ -474,7 +481,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log.delete()
 
         self.assertFalse(cache.get(cache_mapper.get_workout_log_list(log_hash)))
-        self.assertFalse(cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
+        self.assertFalse(
+            cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
 
     def test_cache_delete_log_2(self):
         '''
@@ -483,7 +491,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log_hash = hash((1, 2012, 10))
         log_hash_day = hash((1, 2012, 10, 1))
         self.user_login('admin')
-        self.client.get(reverse('manager:workout:calendar', kwargs={'year': 2012, 'month': 10}))
+        self.client.get(reverse('manager:workout:calendar',
+                                kwargs={'year': 2012, 'month': 10}))
         self.client.get(reverse('manager:workout:calendar-day', kwargs={'username': 'admin',
                                                                         'year': 2012,
                                                                         'month': 10,
@@ -493,7 +502,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
         log.delete()
 
         self.assertTrue(cache.get(cache_mapper.get_workout_log_list(log_hash)))
-        self.assertTrue(cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
+        self.assertTrue(
+            cache.get(cache_mapper.get_workout_log_list(log_hash_day)))
 
 
 class WorkoutLogApiTestCase(api_base_test.ApiBaseResourceTestCase):

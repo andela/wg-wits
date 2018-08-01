@@ -78,12 +78,14 @@ class GymListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         return context
 
 
-class GymUserListView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin, ListView):
+class GymUserListView(LoginRequiredMixin,
+                      WgerMultiplePermissionRequiredMixin, ListView):
     '''
     Overview of all users for a specific gym
     '''
     model = User
-    permission_required = ('gym.manage_gym', 'gym.gym_trainer', 'gym.manage_gyms')
+    permission_required = (
+        'gym.manage_gym', 'gym.gym_trainer', 'gym.manage_gyms')
     template_name = 'gym/member_list.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -92,9 +94,10 @@ class GymUserListView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin, L
         '''
         if request.user.has_perm('gym.manage_gyms') \
             or ((request.user.has_perm('gym.manage_gym')
-                or request.user.has_perm('gym.gym_trainer'))
+                 or request.user.has_perm('gym.gym_trainer'))
                 and request.user.userprofile.gym_id == int(self.kwargs['pk'])):
-            return super(GymUserListView, self).dispatch(request, *args, **kwargs)
+            return super(GymUserListView, self).dispatch(
+                request, *args, **kwargs)
         return HttpResponseForbidden()
 
     def get_queryset(self):
@@ -104,7 +107,8 @@ class GymUserListView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin, L
         out = {'admins': [],
                'members': []}
 
-        for u in Gym.objects.get_members(self.kwargs['pk']).select_related('usercache'):
+        for u in Gym.objects.get_members(
+                self.kwargs['pk']).select_related('usercache'):
             out['members'].append({'obj': u,
                                    'last_log': u.usercache.last_activity})
 
@@ -131,7 +135,8 @@ class GymUserListView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin, L
         return context
 
 
-class GymAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class GymAddView(WgerFormMixin, LoginRequiredMixin,
+                 PermissionRequiredMixin, CreateView):
     '''
     View to add a new gym
     '''
@@ -178,14 +183,16 @@ def gym_new_user_info_export(request):
             and not request.user.has_perm('gym.manage_gym'):
         return HttpResponseForbidden()
 
-    new_user = get_object_or_404(User, pk=request.session['gym.user']['user_pk'])
+    new_user = get_object_or_404(
+        User, pk=request.session['gym.user']['user_pk'])
     new_username = new_user.username
     password = request.session['gym.user']['password']
 
     # Crease CSV 'file'
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
-    writer.writerow([_('Username'), _('First name'), _('Last name'), _('Gym'), _('Password')])
+    writer.writerow([_('Username'), _('First name'), _(
+        'Last name'), _('Gym'), _('Password')])
     writer.writerow([new_username,
                      new_user.first_name,
                      new_user.last_name,
@@ -196,7 +203,8 @@ def gym_new_user_info_export(request):
     today = datetime.date.today()
     filename = 'User-data-{t.year}-{t.month:02d}-{t.day:02d}-{user}.csv'.format(t=today,
                                                                                 user=new_username)
-    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(
+        filename)
     response['Content-Length'] = len(response.content)
     return response
 
@@ -238,10 +246,12 @@ def gym_permissions_user_edit(request, user_pk):
     if not user.is_authenticated():
         return HttpResponseForbidden()
 
-    if not user.has_perm('gym.manage_gyms') and not user.has_perm('gym.manage_gym'):
+    if not user.has_perm('gym.manage_gyms') and not user.has_perm(
+            'gym.manage_gym'):
         return HttpResponseForbidden()
 
-    if user.has_perm('gym.manage_gym') and user.userprofile.gym != member.userprofile.gym:
+    if user.has_perm(
+            'gym.manage_gym') and user.userprofile.gym != member.userprofile.gym:
         return HttpResponseForbidden()
 
     # Calculate available user permissions
@@ -291,7 +301,8 @@ def gym_permissions_user_edit(request, user_pk):
     context = {}
     context['title'] = member.get_full_name()
     context['form'] = form
-    context['form_action'] = reverse('gym:gym:edit-user-permission', kwargs={'user_pk': member.pk})
+    context['form_action'] = reverse(
+        'gym:gym:edit-user-permission', kwargs={'user_pk': member.pk})
     context['extend_template'] = 'base_empty.html' if request.is_ajax() else 'base.html'
     context['submit_text'] = 'Save'
 
@@ -397,7 +408,8 @@ class GymAddUserView(WgerFormMixin,
         return context
 
 
-class GymUpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class GymUpdateView(WgerFormMixin, LoginRequiredMixin,
+                    PermissionRequiredMixin, UpdateView):
     '''
     View to update an existing gym
     '''
@@ -425,12 +437,14 @@ class GymUpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, 
         Send some additional data to the template
         '''
         context = super(GymUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('gym:gym:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'gym:gym:edit', kwargs={'pk': self.object.id})
         context['title'] = _(u'Edit {0}').format(self.object)
         return context
 
 
-class GymDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class GymDeleteView(WgerDeleteMixin, LoginRequiredMixin,
+                    PermissionRequiredMixin, DeleteView):
     '''
     View to delete an existing gym
     '''
@@ -452,5 +466,6 @@ class GymDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin
         '''
         context = super(GymDeleteView, self).get_context_data(**kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object)
-        context['form_action'] = reverse('gym:gym:delete', kwargs={'pk': self.kwargs['pk']})
+        context['form_action'] = reverse('gym:gym:delete', kwargs={
+                                         'pk': self.kwargs['pk']})
         return context

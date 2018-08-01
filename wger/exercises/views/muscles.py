@@ -52,12 +52,14 @@ class MuscleListView(ListView):
         Send some additional data to the template
         '''
         context = super(MuscleListView, self).get_context_data(**kwargs)
-        context['active_languages'] = load_item_languages(LanguageConfig.SHOW_ITEM_EXERCISES)
+        context['active_languages'] = load_item_languages(
+            LanguageConfig.SHOW_ITEM_EXERCISES)
         context['show_shariff'] = True
         return context
 
 
-class MuscleAdminListView(LoginRequiredMixin, PermissionRequiredMixin, MuscleListView):
+class MuscleAdminListView(
+        LoginRequiredMixin, PermissionRequiredMixin, MuscleListView):
     '''
     Overview of all muscles, for administration purposes
     '''
@@ -66,7 +68,8 @@ class MuscleAdminListView(LoginRequiredMixin, PermissionRequiredMixin, MuscleLis
     template_name = 'muscles/admin-overview.html'
 
 
-class MuscleAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class MuscleAddView(WgerFormMixin, LoginRequiredMixin,
+                    PermissionRequiredMixin, CreateView):
     '''
     Generic view to add a new muscle
     '''
@@ -79,7 +82,8 @@ class MuscleAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, 
     permission_required = 'exercises.add_muscle'
 
 
-class MuscleUpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class MuscleUpdateView(WgerFormMixin, LoginRequiredMixin,
+                       PermissionRequiredMixin, UpdateView):
     '''
     Generic view to update an existing muscle
     '''
@@ -94,12 +98,14 @@ class MuscleUpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixi
         Send some additional data to the template
         '''
         context = super(MuscleUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('exercise:muscle:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'exercise:muscle:edit', kwargs={'pk': self.object.id})
         context['title'] = _(u'Edit {0}').format(self.object.name)
         return context
 
 
-class MuscleDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class MuscleDeleteView(WgerDeleteMixin, LoginRequiredMixin,
+                       PermissionRequiredMixin, DeleteView):
     '''
     Generic view to delete an existing muscle
     '''
@@ -116,5 +122,6 @@ class MuscleDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMi
         '''
         context = super(MuscleDeleteView, self).get_context_data(**kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object.name)
-        context['form_action'] = reverse('exercise:muscle:delete', kwargs={'pk': self.kwargs['pk']})
+        context['form_action'] = reverse('exercise:muscle:delete', kwargs={
+                                         'pk': self.kwargs['pk']})
         return context

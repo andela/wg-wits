@@ -98,7 +98,8 @@ def view(request, pk):
     return render(request, 'schedule/view.html', template_data)
 
 
-def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token=None):
+def export_pdf_log(request, pk, images=False,
+                   comments=False, uidb64=None, token=None):
     '''
     Show the workout schedule
     '''
@@ -135,7 +136,8 @@ def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token
     elements = []
 
     # Set the title
-    p = Paragraph(u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
+    p = Paragraph(
+        u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
     elements.append(p)
     elements.append(Spacer(10 * cm, 0.5 * cm))
 
@@ -158,12 +160,14 @@ def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token
 
     # write the document and send the response to the browser
     doc.build(elements)
-    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-log.pdf'.format(pk)
+    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-log.pdf'.format(
+        pk)
     response['Content-Length'] = len(response.content)
     return response
 
 
-def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, token=None):
+def export_pdf_table(request, pk, images=False,
+                     comments=False, uidb64=None, token=None):
     '''
     Show the workout schedule
     '''
@@ -200,7 +204,8 @@ def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, tok
     elements = []
 
     # Set the title
-    p = Paragraph(u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
+    p = Paragraph(
+        u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
     elements.append(p)
     elements.append(Spacer(10 * cm, 0.5 * cm))
 
@@ -224,7 +229,8 @@ def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, tok
 
     # write the document and send the response to the browser
     doc.build(elements)
-    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-table.pdf'.format(pk)
+    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-table.pdf'.format(
+        pk)
     response['Content-Length'] = len(response.content)
     return response
 
@@ -242,7 +248,8 @@ def start(request, pk):
     schedule.is_active = True
     schedule.start_date = datetime.date.today()
     schedule.save()
-    return HttpResponseRedirect(reverse('manager:schedule:view', kwargs={'pk': schedule.id}))
+    return HttpResponseRedirect(
+        reverse('manager:schedule:view', kwargs={'pk': schedule.id}))
 
 
 class ScheduleCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
@@ -262,7 +269,8 @@ class ScheduleCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
         return super(ScheduleCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('manager:schedule:view', kwargs={'pk': self.object.id})
+        return reverse_lazy('manager:schedule:view',
+                            kwargs={'pk': self.object.id})
 
 
 class ScheduleDeleteView(WgerDeleteMixin, DeleteView, PermissionRequiredMixin):
