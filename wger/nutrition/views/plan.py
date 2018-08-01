@@ -31,7 +31,8 @@ from django.utils.translation import ugettext_lazy, ugettext as _
 from django.views.generic import DeleteView, UpdateView
 
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4, cm
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
 from reportlab.platypus import (
     Paragraph,
     SimpleDocTemplate,
@@ -316,7 +317,7 @@ def export_pdf(request, id, uidb64=None, token=None):
     # Create table with nutritional calculations
     data = []
     data.append([Paragraph(u'<para align="center">{0}</para>'.format(_('Nutritional data')),
-                 styleSheet["Bold"])])
+                           styleSheet["Bold"])])
     data.append([Paragraph(_('Macronutrients'), styleSheet["Normal"]),
                  Paragraph(_('Total'), styleSheet["Normal"]),
                  Paragraph(_('Percent of energy'), styleSheet["Normal"]),

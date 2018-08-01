@@ -28,7 +28,8 @@ from wger.utils.helpers import check_token
 from wger.utils.pdf import styleSheet
 from wger.utils.pdf import render_footer
 
-from reportlab.lib.pagesizes import A4, cm
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
 from reportlab.platypus import (
     Paragraph,
     SimpleDocTemplate,

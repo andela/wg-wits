@@ -28,6 +28,9 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 
+SECRET_KEY = os.environ.get("SECRET_KEY",
+                            "M34IvcJr1hpe437YzS29nVCiWqT4MgpxH8SfiXNzPI5oSP8uLYXOIZ")
+
 #
 # Application definition
 #
@@ -90,17 +93,17 @@ INSTALLED_APPS = (
 
 # added list of external libraries to be installed by bower
 BOWER_INSTALLED_APPS = (
-    'jquery#2.1.x',
-    'bootstrap',
+    'bootstrap#3.3.5',
+    'components-font-awesome#4.7.x',
     'd3',
-    'shariff',
-    'tinymce-dist',
     'DataTables',
-    'components-font-awesome',
-    'tinymce',
-    'metrics-graphics',
     'devbridge-autocomplete#1.2.x',
+    'jquery#2.1.x',
+    'metrics-graphics',
+    'shariff#1.24.1',
     'sortablejs#1.4.x',
+    'tinymce',
+    'tinymce-dist',
 )
 
 
@@ -126,6 +129,7 @@ MIDDLEWARE_CLASSES = (
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -310,8 +314,13 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # The default is not DEBUG, override if needed
 # COMPRESS_ENABLED = True
@@ -370,3 +379,6 @@ WGER_SETTINGS = {
     'EMAIL_FROM': 'wger Workout Manager <wger@example.com>',
     'TWITTER': False
 }
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
