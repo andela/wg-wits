@@ -27,6 +27,7 @@ var/
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+package-lock.json
 
 # Installer logs
 pip-log.txt
@@ -46,7 +47,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-settings*.py
 *.sqlite
 /CACHE
 
@@ -58,7 +58,8 @@ target/
 
 # IDE
 .idea/
+.vscode/
 
-# External Libraries 
+# External Libraries
 wger/core/static/bower_components
 node_modules
