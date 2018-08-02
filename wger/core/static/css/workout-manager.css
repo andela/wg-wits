@@ -33,6 +33,9 @@
     background-color: #FFF;
 }
 
+.social-btn {
+    margin-top: 20px;
+}
 
 /*
  * Images in links are vertically aligned
@@ -124,7 +127,7 @@ a:hover img
     -webkit-filter: grayscale(0%);
     -moz-filter: grayscale(0%);
     -ms-filter: grayscale(0%);
-    -o-filter: grayscale(0%);	
+    -o-filter: grayscale(0%);
 }
 */
 
@@ -172,7 +175,7 @@ header h1{
 }
 
 header a,
-header a:hover, 
+header a:hover,
 header a:focus{
     color:white;
     font-size:90%;
