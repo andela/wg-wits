@@ -146,7 +146,8 @@ class IngredientMixin(WgerFormMixin):
               'license_author']
 
 
-class IngredientEditView(IngredientMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class IngredientEditView(IngredientMixin, LoginRequiredMixin,
+                         PermissionRequiredMixin, UpdateView):
     '''
     Generic view to update an existing ingredient
     '''
@@ -197,10 +198,12 @@ class IngredientCreateView(IngredientMixin, CreateView):
         '''
         if request.user.userprofile.is_temporary:
             return HttpResponseForbidden()
-        return super(IngredientCreateView, self).dispatch(request, *args, **kwargs)
+        return super(IngredientCreateView, self).dispatch(
+            request, *args, **kwargs)
 
 
-class PendingIngredientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class PendingIngredientListView(
+        LoginRequiredMixin, PermissionRequiredMixin, ListView):
     '''
     List all ingredients pending review
     '''
@@ -227,7 +230,8 @@ def accept(request, pk):
     ingredient.status = Ingredient.INGREDIENT_STATUS_ACCEPTED
     ingredient.save()
     ingredient.send_email(request)
-    messages.success(request, _('Ingredient was successfully added to the general database'))
+    messages.success(request, _(
+        'Ingredient was successfully added to the general database'))
 
     return HttpResponseRedirect(ingredient.get_absolute_url())
 
@@ -240,5 +244,6 @@ def decline(request, pk):
     ingredient = get_object_or_404(Ingredient, pk=pk)
     ingredient.status = Ingredient.INGREDIENT_STATUS_DECLINED
     ingredient.save()
-    messages.success(request, _('Ingredient was successfully marked as rejected'))
+    messages.success(request, _(
+        'Ingredient was successfully marked as rejected'))
     return HttpResponseRedirect(ingredient.get_absolute_url())

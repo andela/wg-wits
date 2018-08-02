@@ -100,7 +100,8 @@ def create(request, day_pk):
                 all_valid = False
 
         if form.is_valid() and all_valid:
-            # Manually take care of the order, TODO: better move this to the model
+            # Manually take care of the order, TODO: better move this to the
+            # model
             max_order = day.set_set.select_related().aggregate(models.Max('order'))
             form.instance.order = (max_order['order__max'] or 0) + 1
             form.instance.exerciseday = day
@@ -115,7 +116,7 @@ def create(request, day_pk):
                     instance.save()
 
             return HttpResponseRedirect(reverse('manager:workout:view',
-                                        kwargs={'pk': day.get_owner_object().id}))
+                                                kwargs={'pk': day.get_owner_object().id}))
         else:
             logger.debug(form.errors)
 
@@ -124,7 +125,8 @@ def create(request, day_pk):
     context['day'] = day
     context['max_sets'] = Set.MAX_SETS
     context['formsets'] = formsets
-    context['form_action'] = reverse('manager:set:add', kwargs={'day_pk': day_pk})
+    context['form_action'] = reverse(
+        'manager:set:add', kwargs={'day_pk': day_pk})
     context['extend_template'] = 'base_empty.html' if request.is_ajax() else 'base.html'
     return render(request, 'set/add.html', context)
 
@@ -179,7 +181,8 @@ def edit(request, pk):
     formsets = []
     for exercise in set_obj.exercises.all():
         queryset = Setting.objects.filter(set=set_obj, exercise=exercise)
-        formset = SettingFormset(queryset=queryset, prefix='exercise{0}'.format(exercise.id))
+        formset = SettingFormset(
+            queryset=queryset, prefix='exercise{0}'.format(exercise.id))
         formsets.append({'exercise': exercise, 'formset': formset})
 
     if request.method == "POST":
@@ -217,7 +220,7 @@ def edit(request, pk):
                         instance.save()
 
             return HttpResponseRedirect(reverse('manager:workout:view',
-                                        kwargs={'pk': set_obj.get_owner_object().id}))
+                                                kwargs={'pk': set_obj.get_owner_object().id}))
 
     # Other context we need
     context = {}

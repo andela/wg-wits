@@ -72,7 +72,8 @@ def load_ingredient_languages(request):
         profile = request.user.userprofile
         show_english = profile.show_english_ingredients
 
-        # If the user's language is not english and has the preference, add english to the list
+        # If the user's language is not english and has the preference, add
+        # english to the list
         if show_english and language.short_name != 'en':
             languages = (language.id, 2)
 

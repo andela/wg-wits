@@ -90,10 +90,12 @@ class WgerPermissionMixin(object):
                     has_permission = True
 
                 if not has_permission:
-                    return HttpResponseForbidden('You are not allowed to access this object')
+                    return HttpResponseForbidden(
+                        'You are not allowed to access this object')
 
         # Dispatch normally
-        return super(WgerPermissionMixin, self).dispatch(request, *args, **kwargs)
+        return super(WgerPermissionMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 # , PermissionRequiredMixin
@@ -173,7 +175,8 @@ class WgerFormMixin(ModelFormMixin):
 
         # Template to extend. For AJAX requests we don't need the rest of the
         # template, only the form
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
 
         return context
 
@@ -203,7 +206,8 @@ class WgerFormMixin(ModelFormMixin):
 
         # Nothing to see, please move along
         if owner_object and owner_object.user != self.request.user:
-            return HttpResponseForbidden('You are not allowed to access this object')
+            return HttpResponseForbidden(
+                'You are not allowed to access this object')
 
         # Dispatch normally
         return super(WgerFormMixin, self).dispatch(request, *args, **kwargs)
@@ -280,7 +284,8 @@ class WgerDeleteMixin(ModelFormMixin):
 
         # Template to extend. For AJAX requests we don't need the rest of the
         # template, only the form
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
 
         return context
 
@@ -325,9 +330,11 @@ class TextTemplateView(TemplateView):
     '''
     A regular templateView that sets the mime type as text/plain
     '''
+
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'text/plain'
-        return super(TextTemplateView, self).render_to_response(context, **response_kwargs)
+        return super(TextTemplateView, self).render_to_response(
+            context, **response_kwargs)
 
 
 class WebappManifestView(TemplateView):
@@ -340,4 +347,5 @@ class WebappManifestView(TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'application/x-web-app-manifest+json'
-        return super(WebappManifestView, self).render_to_response(context, **response_kwargs)
+        return super(WebappManifestView, self).render_to_response(
+            context, **response_kwargs)

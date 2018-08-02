@@ -197,7 +197,8 @@ class NutritionPlanViewSet(viewsets.ModelViewSet):
         '''
         Return an overview of the nutritional plan's values
         '''
-        return Response(NutritionPlan.objects.get(pk=pk).get_nutritional_values())
+        return Response(NutritionPlan.objects.get(
+            pk=pk).get_nutritional_values())
 
 
 class MealViewSet(WgerOwnerObjectModelViewSet):

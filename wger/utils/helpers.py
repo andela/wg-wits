@@ -60,6 +60,7 @@ class DecimalJsonEncoder(json.JSONEncoder):
     individual weight entries in the workout log) and they need to be
     processed, json.dumps() doesn't work on them
     '''
+
     def default(self, obj):
         if isinstance(obj, decimal.Decimal):
             return str(obj)
@@ -140,7 +141,8 @@ def check_token(uidb64, token):
             return False
         user = User.objects.get(pk=uid)
 
-        if user is not None and default_token_generator.check_token(user, token):
+        if user is not None and default_token_generator.check_token(
+                user, token):
             return True
 
     return False
