@@ -1,3 +1,20 @@
+Wger Workout Manager
+====================
+
+.. image:: https://travis-ci.org/andela/wg-wits.svg?branch=develop
+    :target: https://travis-ci.org/andela/wg-wits
+
+.. image:: https://coveralls.io/repos/github/andela/wg-wits/badge.svg?branch=develop
+    :target: https://coveralls.io/github/andela/wg-wits?branch=develop
+
+.. image:: https://api.codeclimate.com/v1/badges/6f9674e42d792df3c8b8/maintainability
+   :target: https://codeclimate.com/github/andela/wg-wits/maintainability
+   :alt: Maintainability
+
+.. image:: https://img.shields.io/badge/License-GNU-blue.svg
+   :target: https://www.gnu.org/licenses/agpl-3.0.en.html
+
+
 Thank you for downloading wger Workout Manager. wger (ˈvɛɡɐ) is a free, open source web
 application that manages your exercises and personal workouts, weight and diet
 plans. It can also be used as a simple gym management utility, providing different
