@@ -1,0 +1,153 @@
+{% load i18n staticfiles wger_extras %}
+
+<div class="row feature-sets">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="carousel slide" id="fade-feature-carousel" data-ride="carousel" data-interval="10000">
+          <!-- Carousel indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#fade-feature-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="1"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="2"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="3"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="4"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="5"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="6"></li>
+            <li data-target="#fade-feature-carousel" data-slide-to="7"></li>
+          </ol>
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            <div class="active item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/weight-chart.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans "Weight tracker" %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            Keep track of your progress with the body weight chart. This makes
+                            it easy to see if you are reaching your goals or need to adjust
+                            something.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/calendar.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans 'Calendar' %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            Get an overview of how and when you trained as well as how you
+                            personally felt you performed. Access all your individual diary
+                            entries with one click.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/muscle-overview.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans 'Exercise database' %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            The exercise database contains more than hundred exercises from
+                            which you can choose when creating a workout. You can view them by
+                            category and equipment used or muscles trained.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/gym-management.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans 'Gym management' %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            Use the application for your gym to manage its members, their
+                            workouts and attendance. You can manage the members' contracts,
+                            keep notes and upload any files you might need.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/rest-api.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans "REST API" %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            wger provides a REST API with full read and write access to all
+                            data so you can integrate your own application and tools.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/plan.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans 'Nutritional Plan' %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            Use the application for your gym to manage its members, their
+                            workouts and attendance. You can manage the members' contracts,
+                            keep notes and upload any files you might need.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/workout-log.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans "Progress Evaluation" %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            For all your workouts, meal plans, wger generates for you evaluation diagrams as charts. You can make your decisions basing on this data.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="timeline-image feature-circle">
+                    <img class="img-circle img-responsive" src="{% static 'images/free-open-source.png' %}" alt="">
+                </div>
+                <div class="timeline-heading">
+                    <h4>{% trans "Software Licence" %}</h4>
+                </div>
+                <div class="timeline-body">
+                    <p class="text-near-white">
+                        {% blocktrans trimmed %}
+                            Wger Workout Manager is Free/Libre Open Source Software (FLOSS) &amp; released under the Affero GNU General Public License (AGPL) Version 3+.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
