@@ -1,3 +1,3 @@
-release: invoke migrate-db
+release: bash ./release.sh
 web: gunicorn wger.wsgi:application
 
