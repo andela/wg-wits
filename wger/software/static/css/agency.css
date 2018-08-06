@@ -818,3 +818,9 @@ border: none;
   border-radius: 140px;
   margin-bottom: 20px;
 }
+
+.auth-buttons {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 24px;
+}
