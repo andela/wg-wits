@@ -32,7 +32,6 @@ if os.environ.get("DB") == "heroku":
         'default': dj_database_url.config(default=config('DATABASE_URL'))
     }
 
-
 # Your reCaptcha keys
 RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''

@@ -79,7 +79,6 @@ class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
 
         result_meal = meal.get_nutritional_values()
         self.assertEqual(result_item, result_meal)
-
         result_plan = plan.get_nutritional_values()
         self.assertEqual(result_meal, result_plan['total'])
 
