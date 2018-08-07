@@ -42,10 +42,15 @@ class MuscleListView(ListView):
     '''
     Overview of all muscles and their exercises
     '''
-    model = Muscle
-    queryset = Muscle.objects.all().order_by('-is_front', 'name'),
     context_object_name = 'muscle_list'
     template_name = 'muscles/overview.html'
+
+    def get_queryset(self):
+        '''
+        Queryset for updated muscles.
+        '''
+        queryset = Muscle.objects.all().order_by('-is_front', 'name'),
+        return queryset
 
     def get_context_data(self, **kwargs):
         '''
@@ -59,7 +64,7 @@ class MuscleListView(ListView):
 
 
 class MuscleAdminListView(
-        LoginRequiredMixin, PermissionRequiredMixin, MuscleListView):
+        LoginRequiredMixin, PermissionRequiredMixin, ListView):
     '''
     Overview of all muscles, for administration purposes
     '''
