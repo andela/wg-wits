@@ -1,14 +1,50 @@
 {% extends "base.html" %}
 {% load i18n staticfiles wger_extras django_bootstrap_breadcrumbs %}
 
-{% block title %}{% trans "User list" %}{% endblock %}
+{% block title %}
+<a href="{% url 'core:user:list'%}?active=true" id="active_users_link"
+ style="visibility: hidden"></a>
 
+<a href="{% url 'core:user:list'%}?active=false" id="inactive_users_link"
+ style="visibility: hidden"></a>
+
+{% if user_table.active == False %}
+    {% trans "Active Users" %}&nbsp;
+    <span>
+        <a id="active" class="btn btn-sm btn-primary" name={{ user_table.active }}
+        role="button">
+        </a>
+    </span>
+{% else %}
+    {% trans "Inactive Users" %}&nbsp;
+    <span>
+        <a id="active" class="btn btn-sm btn-primary" name={{ user_table.active }}
+        role="button">
+        </a>
+    </span>
+{% endif %}
+{% endblock %}
 
 {% block content %}
     {% include 'gym/partial_user_list.html' %}
+     <script>
+        active = document.getElementById('active')
+        let active_users_link = document.getElementById('active_users_link')
+        let inactive_users_link = document.getElementById('inactive_users_link')
+        if (active.name == "True"){
+            active.setAttribute('href',active_users_link)       
+            active.innerHTML="View Active Users"
+        }
+        else{
+            active.setAttribute('href',inactive_users_link)
+            active.innerHTML="View Inactive Users"
+        }
+    </script>
 {% endblock %}
 
 
 {% block sidebar %}
 
 {% endblock %}
+
+

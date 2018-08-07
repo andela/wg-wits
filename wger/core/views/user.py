@@ -533,37 +533,57 @@ class UserDetailView(
 
 
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-    '''
+
+    """
     Overview of all users in the instance
-    '''
+    """
+
     model = User
-    permission_required = ('gym.manage_gyms',)
-    template_name = 'user/list.html'
+    permission_required = "gym.manage_gyms"
+    template_name = "user/list.html"
 
     def get_queryset(self):
-        '''
+        # print("the rq is",self.request.GET['active'])
+        # print("the kwargs are",self.kwargs)
+        """
         Return a list with the users, not really a queryset.
-        '''
-        out = {'admins': [],
-               'members': []}
+        """
+        out = {"admins": [], "members": []}
+        # if bool(self.kwargs):
+        if self.request.GET.get("active") == "false":
+            active_users = True
+            self.active = True
+        else:
+            active_users = False
+            self.active = False
 
-        for u in User.objects.select_related(
-                'usercache', 'userprofile__gym').all():
-            out['members'].append({'obj': u,
-                                   'last_log': u.usercache.last_activity})
+        # active_users = False if self.kwargs['filtered'] == 'False' else True
+        if not active_users:
+            for u in (
+                User.objects.select_related("usercache", "userprofile__gym")
+                .all()
+                .filter(is_active=True)
+            ):
+                out["members"].append({"obj": u, "last_log": u.usercache.last_activity})
+        else:
+            for u in (
+                User.objects.select_related("usercache", "userprofile__gym")
+                .all()
+                .filter(is_active=False)
+            ):
+                out["members"].append({"obj": u, "last_log": u.usercache.last_activity})
 
         return out
 
     def get_context_data(self, **kwargs):
-        '''
+        """
         Pass other info to the template
-        '''
+        """
         context = super(UserListView, self).get_context_data(**kwargs)
-        context['show_gym'] = True
-        context['user_table'] = {'keys': [_('ID'),
-                                          _('Username'),
-                                          _('Name'),
-                                          _('Last activity'),
-                                          _('Gym')],
-                                 'users': context['object_list']['members']}
+        context["show_gym"] = True
+        context["user_table"] = {
+            "keys": [_("ID"), _("Username"), _("Name"), _("Last activity"), _("Gym")],
+            "users": context["object_list"]["members"],
+            "active": self.active,
+        }
         return context
