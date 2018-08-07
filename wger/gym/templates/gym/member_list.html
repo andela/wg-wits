@@ -27,6 +27,9 @@
     <th style="width: 40%;">{% trans "Username" %}</th>
     <th>{% trans "Name" %}</th>
     {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
+        <th style="text-align: right;">{% trans "" %}</th>
+    {% endif %}
+    {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
         <th style="text-align: right;">{% trans "Roles" %}</th>
     {% endif %}
 </tr>
@@ -58,6 +61,48 @@
 
     {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
     <td style="text-align: right;">
+        <div class="btn-group pull-left">
+            <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+                {% trans "Manage User" %} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a href="#" style="text-align: center;" data-action="activate"
+                       {% if current_user.obj.is_active %} class="btn disabled" {% endif %}
+                       data-user="{{ current_user.obj.get_full_name }}"
+                       data-url= "{% url 'gym:gym:activate-user' current_user.obj.pk %}?active=true"
+                           onclick="modifyUser(this)">
+                        {% trans "Activate User" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" style="text-align: center;" data-action="deactivate"
+                       {% if not current_user.obj.is_active %} class="btn disabled" {% endif %}
+                       data-user="{{ current_user.obj.get_full_name }}"
+                       data-url= "{% url 'gym:gym:activate-user' current_user.obj.pk %}?active=false" onclick="modifyUser(this)">
+                        {% trans "Deactivate User" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" style="color: red; text-align: center;" data-action="delete"
+                       data-user="{{ current_user.obj.get_full_name }}"
+                       data-url= "{% url 'gym:gym:delete-user' current_user.obj.pk  %}" onclick="modifyUser(this)">
+                        {% trans "Delete User" %}
+                    </a>
+                </li>
+            </ul>
+            {% if not current_user.obj.is_active %}
+            <span class="label label-danger" style="margin-left: 5px;">{% trans "deactivated" %}</span>
+            {% endif %}
+
+        </div>
+
+    </td>
+
+    {% endif %}
+
+    {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
+    <td style="text-align: right;">
         <a href="{% url 'gym:gym:edit-user-permission' current_user.obj.pk %}" class="btn btn-default btn-xs wger-modal-dialog">
             <span class="{% fa_class 'cog' %}"></span>
         </a>
@@ -71,6 +116,70 @@
 {% endfor %}
 </tbody>
 </table>
+<form id="delete-user-form" method="post">
+    {% csrf_token %}
+    <input id="delete-user-form-value" type="hidden">
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-trainer-modal" tabindex="-1" role="dialog" aria-labelledb="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete-modal-title" style="font-size: 140%; color: #000;">Modal title</h5>
+      </div>
+      <div class="modal-body" id="delete-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="delete-modal-save-button" type="button" class="btn" onclick="submitForm(this)">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function modifyUser (event) {
+        var action = event.getAttribute('data-action');
+        var user = event.getAttribute('data-user');
+        var url = event.getAttribute('data-url');
+        var saveButton = $('#delete-modal-save-button');
+
+        if (action === 'delete') {
+            editModal('Delete', ' Are you sure you want to delete this user? This action cannot be undone.',
+            'btn-primary', 'btn-danger', saveButton, url, user);
+        }
+        else if (action === 'deactivate') {
+            editModal('Deactivate', ' Are you sure you want to deactivate this user?', 'btn-danger',
+            'btn-primary', saveButton, url, user);
+        }
+        else if (action === 'activate') {
+            editModal('Activate', ' Are you sure you want to activate this user?', 'btn-danger',
+            'btn-primary', saveButton, url, user);
+        }
+        $('#delete-trainer-modal').modal('show');
+    }
+
+    function editModal(title, message, removeClass, addClass, saveButton, url, user) {
+        $('#delete-modal-title').html(title+ ' ' + user);
+        $('#delete-modal-body').html(message);
+        saveButton.removeClass(removeClass);
+        saveButton.addClass(addClass);
+        saveButton.html('Yes, '+ title);
+        saveButton.attr("data-url", url);
+    }
+
+    function submitForm(event){
+        var form = $('#delete-user-form');
+        var url = event.getAttribute("data-url");
+
+        form.attr("action", url).submit();
+        return false;
+
+    }
+
+</script>
 {% endblock %}
 
 

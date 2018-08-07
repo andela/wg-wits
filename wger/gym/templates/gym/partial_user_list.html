@@ -20,6 +20,7 @@ $(document).ready( function () {
     {% for key in user_table.keys %}
         <th>{{ key }}</th>
     {% endfor %}
+    <th></th>
 </tr>
 </thead>
 <tbody>
@@ -48,6 +49,45 @@ $(document).ready( function () {
         {% endif %}
     </td>
     {% endif %}
+    <td style="text-align: right;">
+        <div class="btn-group pull-left">
+            <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+                {% trans "Manage User" %} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a href="#" style="text-align: center;" data-action="activate"
+                       {% if current_user.obj.is_active %} class="btn disabled" {% endif %}
+                       data-user="{{ current_user.obj.get_full_name }}"
+                       data-url= "{% url 'gym:gym:activate-user' current_user.obj.pk %}?active=true"
+                           onclick="modifyUser(this)">
+                        {% trans "Activate User" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" style="text-align: center;" data-action="deactivate"
+                       {% if not current_user.obj.is_active %} class="btn disabled" {% endif %}
+                       data-user="{{ current_user.obj.get_full_name }}"
+                       data-url= "{% url 'gym:gym:activate-user' current_user.obj.pk %}?active=false" onclick="modifyUser(this)">
+                        {% trans "Deactivate User" %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" style="color: red; text-align: center;" data-action="delete"
+                       data-user="{{ current_user.obj.get_full_name }}"
+                       data-url= "{% url 'gym:gym:delete-user' current_user.obj.pk  %}" onclick="modifyUser(this)">
+                        {% trans "Delete User" %}
+                    </a>
+                </li>
+            </ul>
+            {% if not current_user.obj.is_active %}
+            <span class="label label-danger" style="margin-left: 5px;">{% trans "deactivated" %}</span>
+            {% endif %}
+
+        </div>
+
+    </td>
+
 </tr>
 {% endfor %}
 </tbody>
