@@ -32,7 +32,8 @@ from wger.exercises.api.serializers import (
     ExerciseImageSerializer,
     ExerciseCategorySerializer,
     EquipmentSerializer,
-    ExerciseCommentSerializer
+    ExerciseCommentSerializer,
+    ExerciseAllInfoSerializer
 )
 from wger.exercises.models import (
     Exercise,
@@ -75,6 +76,22 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         # Todo is it right to call set author after save?
         obj.set_author(self.request)
         obj.save()
+
+
+class ExerciseAllInforViewSet(viewsets.ReadOnlyModelViewSet):
+    '''
+    API endpoint for all exercise objects information
+    '''
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    ordering_fields = '__all__'
+
+    @detail_route(methods=["GET"])
+    def info(self, request, pk):
+        infos = Exercise.objects.filter(pk=pk)
+        serializer = ExerciseAllInfoSerializer(infos, many=True)
+        return Response(serializer.data, status=200)
 
 
 @api_view(['GET'])
