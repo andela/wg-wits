@@ -93,9 +93,11 @@ patterns_user = [
     url(r'^(?P<pk>\d+)/overview',
         user.UserDetailView.as_view(),
         name='overview'),
-    url(r'^list',
+    url(r'',
         user.UserListView.as_view(),
         name='list'),
+
+
 
     # Password reset is implemented by Django, no need to cook our own soup here
     # (besides the templates)
@@ -202,7 +204,7 @@ urlpatterns = [
         name='feedback'),
 
     url(r'^language/', include(patterns_language, namespace="language")),
-    url(r'^user/', include(patterns_user, namespace="user")),
+    url(r'^users/', include(patterns_user, namespace="user")),
     url(r'^license/', include(patterns_license, namespace="license")),
     url(r'^repetition-unit/',
         include(patterns_repetition_units,
