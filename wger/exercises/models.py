@@ -34,6 +34,7 @@ from django.core import mail
 from django.core.cache import cache
 from django.core.validators import MinLengthValidator
 from django.conf import settings
+from django.db.models import Q
 
 from wger.core.models import Language
 from wger.utils.helpers import smart_capitalize
@@ -77,6 +78,21 @@ class Muscle(models.Model):
         Muscle has no owner information
         '''
         return False
+
+    def delete(self, *args, **kwargs):
+        '''
+        Reset the cache before deleting the muscle
+        '''
+        # find  all exercises attached to this muscle
+        exercises = Exercise.objects.filter(Q(muscles=self)).all()
+        for exercise in exercises:
+            for lang in Language.objects.all():
+                delete_template_fragment_cache('muscle-overview', lang.id)
+                delete_template_fragment_cache('exercise-detail-muscles',
+                                               exercise.id, lang.id)
+                delete_template_fragment_cache('exercise-overview', lang.id)
+        # proceed and delete the muscle
+        super(Muscle, self).delete(*args, **kwargs)
 
 
 @python_2_unicode_compatible
