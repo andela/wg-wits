@@ -66,6 +66,14 @@ patterns_gym = [
     url(r'^user/(?P<user_pk>\d+)/reset-user-password$',
         gym.reset_user_password,
         name='reset-user-password'),
+
+    url(r'^user/(?P<user_pk>\d+)/delete$',
+        gym.delete_user,
+        name='delete-user'),
+
+    url(r'^user/(?P<user_pk>\d+)/$',
+        gym.activate_user,
+        name='activate-user'),
 ]
 
 # 'sub patterns' for gym config

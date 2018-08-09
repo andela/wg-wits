@@ -168,6 +168,47 @@ def gym_new_user_info(request):
     return render(request, 'gym/new_user.html', context)
 
 
+@login_required()
+def delete_user(request, user_pk):
+    member = get_object_or_404(User, pk=user_pk)
+    user = request.user
+
+    if not user.has_perm('gym.manage_gyms') and not user.has_perm(
+            'gym.manage_gym'):
+        return HttpResponseForbidden()
+
+    user_matched = GymUserConfig.objects.filter(user_id=member.id).first() or \
+        GymAdminConfig.objects.filter(user_id=member.id).first()
+
+    if user_matched:
+        member = User.objects.filter(pk=user_pk).first()
+        member.delete()
+
+    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user.pk}))
+
+
+@login_required()
+def activate_user(request, user_pk):
+    member = get_object_or_404(User, pk=user_pk)
+    user = request.user
+    set_status = str(request.GET['active'])
+
+    if not user.has_perm('gym.manage_gyms') and not user.has_perm(
+            'gym.manage_gym'):
+        return HttpResponseForbidden()
+
+    user_matched = GymUserConfig.objects.filter(user_id=member.id).first() or \
+        GymAdminConfig.objects.filter(user_id=member.id).first()
+
+    if user_matched:
+        status = False if(set_status == 'false') else True
+        member = User.objects.filter(pk=user_pk).first()
+        member.is_active = status
+        member.save()
+
+    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user.pk}))
+
+
 @login_required
 def gym_new_user_info_export(request):
     '''
