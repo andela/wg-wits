@@ -401,6 +401,13 @@ class ExercisesTestCase(WorkoutManagerTestCase):
         self.user_login('test')
         self.search_exercise()
 
+    def test_showing_all_exercise_info(self):
+        '''
+        Tests the exercises details page
+        '''
+        response = self.client.get('/api/v2/exercises/1/info/', format=json)
+        self.assertEqual(response.status_code, 200)
+
 
 class DeleteExercisesTestCase(WorkoutManagerDeleteTestCase):
     '''

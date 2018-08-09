@@ -71,3 +71,39 @@ class MuscleSerializer(serializers.ModelSerializer):
     '''
     class Meta:
         model = Muscle
+
+
+class ExerciseAllInfoSerializer(serializers.ModelSerializer):
+    '''
+    Exercise All Information serializer
+    '''
+    exerciseimage_set = ExerciseImageSerializer(read_only=True, many=True)
+    muscles = MuscleSerializer(read_only=True, many=True)
+    muscles_secondary = MuscleSerializer(read_only=True, many=True)
+    category = ExerciseCategorySerializer(read_only=True)
+    equipment = EquipmentSerializer(read_only=True, many=True)
+    license = serializers.StringRelatedField(read_only=True)
+    language = serializers.StringRelatedField(read_only=True)
+    exercisecomment_set = serializers.StringRelatedField(read_only=True, many=True)
+    exercisecomment_set = serializers.StringRelatedField(read_only=True, many=True)
+
+    class Meta:
+        model = Exercise
+        fields = (
+            'id',
+            'creation_date',
+            'name',
+            'name_original',
+            'uuid',
+            'description',
+            'language',
+            'status',
+            'license',
+            'license_author',
+            'category',
+            'exerciseimage_set',
+            'muscles',
+            'muscles_secondary',
+            'equipment',
+            'exercisecomment_set'
+        )
