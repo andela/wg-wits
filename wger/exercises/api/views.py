@@ -78,7 +78,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         obj.save()
 
 
-class ExerciseAllInforViewSet(viewsets.ReadOnlyModelViewSet):
+class ExerciseAllInformationViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     API endpoint for all exercise objects information
     '''
