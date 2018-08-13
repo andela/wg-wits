@@ -5,12 +5,9 @@ from django.core.cache import cache
 from wger.utils.cache import cache_mapper
 
 
-@receiver(post_save, sender=NutritionPlan)
-@receiver(post_delete, sender=NutritionPlan)
-@receiver(post_delete, sender=MealItem)
-@receiver(post_save, sender=MealItem)
-@receiver(post_save, sender=Meal)
-@receiver(post_delete, sender=Meal)
+@receiver([post_delete, post_save], sender=NutritionPlan)
+@receiver([post_delete, post_save], sender=MealItem)
+@receiver([post_delete, ], sender=Meal)
 def reset_nutrional_plan_canonical(sender, **kwargs):
     '''
     Function to send signal
