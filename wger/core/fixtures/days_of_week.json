@@ -1,51 +1,201 @@
-[
-    {
-        "pk": 1, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Monday"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Tuesday"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Wednesday"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Thursday"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Friday"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Saturday"
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "core.daysofweek", 
-        "fields": {
-            "day_of_week": "Sunday"
-        }
+[{
+    "pk": 1,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Monday",
+      "training_plan": "microcycle"
     }
+  },
+  {
+    "pk": 2,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Tuesday",
+      "training_plan": "microcycle"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Wednesday",
+      "training_plan": "microcycle"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Thursday",
+      "training_plan": "microcycle"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Friday",
+      "training_plan": "microcycle"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Saturday",
+      "training_plan": "microcycle"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Sunday",
+      "training_plan": "microcycle"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "January",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "February",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "March",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "April",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "May",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "June",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "July",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "August",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "September",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 17,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "October",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 18,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "November",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 19,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "December",
+      "training_plan": "macrocycle"
+    }
+  },
+  {
+    "pk": 20,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Week 1",
+      "training_plan": "mesocycle"
+    }
+  },
+  {
+    "pk": 21,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Week 2",
+      "training_plan": "mesocycle"
+    }
+  },
+  {
+    "pk": 22,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Week 3",
+      "training_plan": "mesocycle"
+    }
+  },
+  {
+    "pk": 23,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Week 4",
+      "training_plan": "mesocycle"
+    }
+  },
+  {
+    "pk": 24,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Week 5",
+      "training_plan": "mesocycle"
+    }
+  },
+  {
+    "pk": 25,
+    "model": "core.daysofweek",
+    "fields": {
+      "day_of_week": "Week 6",
+      "training_plan": "mesocycle"
+    }
+  }
 ]

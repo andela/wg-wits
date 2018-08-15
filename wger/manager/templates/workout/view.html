@@ -66,8 +66,16 @@ $(document).ready(function() {
     {% if is_owner %}
         <p>
             <a href="{% url 'manager:day:add' workout.id %}" class="wger-modal-dialog btn btn-default btn-block">
-            {% trans "No days for this workout." %}
-            {% trans "Add training day" %}
+            {% if workout.cycle_kind == 'microcycle' %}
+                {% trans "No days for this workout." %}
+                {% trans "Add training day" %}
+            {% elif workout.cycle_kind == 'mesocycle' %}
+                {% trans "No training weeks for this workout." %}
+                {% trans "Add training week" %}
+            {% elif workout.cycle_kind == 'macrocycle' %}
+                {% trans "No months for this workout." %}
+                {% trans "Add training month" %}
+            {% endif %}
             </a>
         </p>
     {% endif %}
@@ -75,7 +83,15 @@ $(document).ready(function() {
 
 {% if is_owner %}
 <p>
-    <a href="{% url 'manager:day:add' workout.id %}" class="wger-modal-dialog">{% trans "Add training day" %}</a>
+    <a href="{% url 'manager:day:add' workout.id %}" class="wger-modal-dialog">
+    {% if workout.cycle_kind == 'microcycle' %}
+        {% trans "Add training day" %}
+    {% elif workout.cycle_kind == 'mesocycle' %}
+        {% trans "Add training week" %}
+    {% elif workout.cycle_kind == 'macrocycle' %}
+        {% trans "Add training month" %}
+    {% endif %}
+    </a>
     |
     <a id="exercise-comments-toggle" href="{% url 'core:user:preferences' %}">{% trans "Show/Hide exercise comments" %}</a>
 </p>
@@ -91,8 +107,16 @@ $(document).ready(function() {
 <h4>{% trans "Steps" %}</h4>
 
 <ol>
+    {% if workout.cycle_kind == 'microcycle' %}
     <li>{% trans "Add training days" %}</li>
     <li>{% trans "Add workout sets to days" %}</li>
+    {% elif workout.cycle_kind == 'mesocycle' %}
+    <li>{% trans "Add training weeks" %}</li>
+    <li>{% trans "Add workout sets to weeks" %}</li>
+    {% elif workout.cycle_kind == 'macrocycle' %}
+    <li>{% trans "Add training months" %}</li>
+    <li>{% trans "Add workout sets to months" %}</li>
+    {% endif %}
     <li>{% trans "Set the repetitions for each set" %}</li>
 </ol>
 
