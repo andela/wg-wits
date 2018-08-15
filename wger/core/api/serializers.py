@@ -16,6 +16,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 
 from wger.core.models import (
     UserProfile,
@@ -23,7 +24,9 @@ from wger.core.models import (
     DaysOfWeek,
     License,
     RepetitionUnit,
-    WeightUnit)
+    WeightUnit,
+    User,
+    APIKeyUsers)
 
 
 class UserprofileSerializer(serializers.ModelSerializer):
@@ -79,3 +82,38 @@ class WeightUnitSerializer(serializers.ModelSerializer):
     '''
     class Meta:
         model = WeightUnit
+
+
+class APIException400(APIException):
+    status_code = 400
+
+
+class Userserializer(serializers.ModelSerializer):
+    '''
+    Users' registration serializer
+    '''
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'password'
+        )
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user_exists = User.objects.filter(email=validated_data['email']).first()
+        if user_exists is not None:
+            raise APIException400("User exists already.")
+
+        user = User(
+            email=validated_data['email'],
+            username=validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
+
+        user_profile = user.userprofile
+        user_profile.rest_api_user = True
+        user_profile.save()
+
+        return user
