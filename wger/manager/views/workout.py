@@ -213,10 +213,15 @@ def add(request):
     '''
     Add a new workout and redirect to its page
     '''
-    workout = Workout()
+    cycle = request.GET.get('cycle', None)
+    cycle_plans = {
+        'micro': 'microcycle',
+        'meso': 'mesocycle',
+        'macro': 'macrocycle'
+    }
+    workout = Workout(cycle_kind=cycle_plans.get(cycle, 'microcycle'))
     workout.user = request.user
     workout.save()
-
     return HttpResponseRedirect(workout.get_absolute_url())
 
 

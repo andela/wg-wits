@@ -67,7 +67,7 @@ class DemoUserForm(Form):
 class WorkoutForm(ModelForm):
     class Meta:
         model = Workout
-        exclude = ('user',)
+        exclude = ('user', 'cycle_kind')
 
 
 class WorkoutCopyForm(Form):

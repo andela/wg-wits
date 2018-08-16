@@ -19,6 +19,13 @@
 
                 <h4 class="list-group-item-heading">{{ workout }}</h4>
                 <p class="list-group-item-text">{{ workout.creation_date }}</p>
+                {% if workout.cycle_kind == 'microcycle' %}
+                <span class="label label-primary">Microcycle</span>
+                {% elif workout.cycle_kind == 'macrocycle' %}
+                <span class="label label-info">Macrocycle</span>
+                {% elif workout.cycle_kind == 'mesocycle' %}
+                <span class="label label-success">Mesocycle</span>
+                {% endif %}
             </a>
         {% empty %}
             <a href="{% url 'manager:workout:add' %}" class="list-group-item">
@@ -30,7 +37,15 @@
 
 
 {% block options %}
-<a href="{% url 'manager:workout:add' %}" class="btn btn-success btn-sm">
-    {% trans "Add workout" %}
-</a>
+<div class="dropdown">
+    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+       Add workout
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li><a href="{% url 'manager:workout:add' %}?cycle=micro">Microcycle: One week plan</a></li>
+      <li><a href="{% url 'manager:workout:add' %}?cycle=meso">Mesocycle: Two to six weeks plan</a></li>
+      <li><a href="{% url 'manager:workout:add' %}?cycle=macro">Macrocycle: One year plan</a></li>
+    </ul>
+  </div>
 {% endblock %}

@@ -512,9 +512,15 @@ class DaysOfWeek(models.Model):
 
     This model is needed so that 'Day' can have multiple days of the week selected
     '''
-
+    TRAINING_PLANS = (
+        ('macrocycle', 'macrocycle'),
+        ('mesocycle', 'Mesocycle'),
+        ('microcycle', 'Microcycle')
+    )
     day_of_week = models.CharField(max_length=9,
                                    verbose_name=_('Day of the week'))
+    training_plan = models.CharField(max_length=10, choices=TRAINING_PLANS,
+                                     default='microcycle')
 
     class Meta:
         '''
