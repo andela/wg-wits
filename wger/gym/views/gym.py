@@ -184,12 +184,13 @@ def delete_user(request, user_pk):
         member = User.objects.filter(pk=user_pk).first()
         member.delete()
 
-    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user.pk}))
+    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user_matched.gym_id}))
 
 
 @login_required()
 def activate_user(request, user_pk):
     member = get_object_or_404(User, pk=user_pk)
+
     user = request.user
     set_status = str(request.GET['active'])
 
@@ -206,7 +207,7 @@ def activate_user(request, user_pk):
         member.is_active = status
         member.save()
 
-    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user.pk}))
+    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user_matched.gym_id}))
 
 
 @login_required
