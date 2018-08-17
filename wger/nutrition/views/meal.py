@@ -23,8 +23,9 @@ from django.utils.translation import ugettext_lazy
 
 from django.views.generic import CreateView, UpdateView
 
-from wger.nutrition.models import NutritionPlan, Meal
+from wger.nutrition.models import NutritionPlan, Meal, MealItem, Ingredient
 from wger.utils.generic_views import WgerFormMixin
+from wger.nutrition.forms import MealForm
 
 logger = logging.getLogger(__name__)
 
@@ -37,18 +38,30 @@ class MealCreateView(WgerFormMixin, CreateView):
     '''
     Generic view to add a new meal to a nutrition plan
     '''
-
     model = Meal
-    fields = '__all__'
-    title = ugettext_lazy('Add new meal')
+    form_class = MealForm
     owner_object = {'pk': 'plan_pk', 'class': NutritionPlan}
+    template_name = 'meal/meal_form.html'
 
     def form_valid(self, form):
         plan = get_object_or_404(
             NutritionPlan, pk=self.kwargs['plan_pk'], user=self.request.user)
         form.instance.plan = plan
         form.instance.order = 1
-        return super(MealCreateView, self).form_valid(form)
+        response = super(MealCreateView, self).form_valid(form)
+        ingredient = self.request.POST.get('ingredient')
+        request_amount = self.request.POST.get('amount')
+        database_meal = Meal.objects.get(id=self.object.id)
+        database_ingredient = Ingredient.objects.get(id=ingredient)
+        # create a new meal item instance
+        meal_item = MealItem(
+            meal=database_meal,
+            ingredient=database_ingredient,
+            order=1,
+            amount=request_amount)
+        meal_item.save()
+
+        return response
 
     def get_success_url(self):
         return self.object.plan.get_absolute_url()
