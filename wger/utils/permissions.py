@@ -18,6 +18,15 @@
 from rest_framework import permissions
 
 
+class CanCreateUserViaAPIPermission(permissions.BasePermission):
+    '''
+    Custom permission that restricts users from creating users via the REST API by default
+    '''
+
+    def has_permission(self, request, view):
+        return request.user.userprofile.add_user
+
+
 class WgerPermission(permissions.BasePermission):
     '''
     Checks that the user has access to the object

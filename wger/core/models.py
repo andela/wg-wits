@@ -34,6 +34,17 @@ from wger.weight.models import WeightEntry
 
 
 @python_2_unicode_compatible
+class APIKeyUsers(models.Model):
+    '''
+    APIKEY USERS (user, user creator)
+    '''
+
+    user = models.OneToOneField(User, related_name='status', on_delete=models.CASCADE)
+
+    creator = models.ForeignKey(User, verbose_name=_('Creator'))
+
+
+@python_2_unicode_compatible
 class Language(models.Model):
     '''
     Language of an item (exercise, workout, etc.)
@@ -316,6 +327,27 @@ by the US Department of Agriculture. It is extremely complete, with around
                                                                MaxValueValidator(30)],
                                                    default=0)
     '''Number of Days for email weight reminder'''
+
+    #
+    # WHO CREATE THIS USER
+    #
+    rest_api_user = models.BooleanField(
+        verbose_name=_('Who created this user'),
+        help_text=_('Boolean value to show whether this user was \
+        created via the REST API or it is a wger user instance'),
+        default=False
+    )
+
+    '''
+    Who created this user
+    '''
+
+    add_user = models.BooleanField(
+        verbose_name=_('Field to verify whether a particular user can \
+        add other users via the REST API'),
+        help_text=_('Check eligibility of this user to create users via the REST API'),
+        default=False
+    )
 
     @property
     def weight(self):
