@@ -457,7 +457,8 @@
             "category": 13,
             "uuid": "605b4a25-bc1d-4604-bd93-c85b2aaf84ae",
             "muscles": [
-                2
+                2,
+                18
             ],
             "license": 1,
             "name": "Butterfly reverse"
@@ -2242,7 +2243,8 @@
             "category": 12,
             "uuid": "3c3f23b5-b523-4a69-8c79-1106a4ce9b6d",
             "muscles": [
-                12
+                12,
+                18
             ],
             "license": 1,
             "name": "Rowing, T-bar"
@@ -2669,7 +2671,8 @@
             "uuid": "61271a8e-6a00-4898-8dc3-ea9ef913f25e",
             "muscles": [
                 2,
-                9
+                9,
+                17
             ],
             "license": 1,
             "name": "Upright row, SZ-bar"
@@ -3077,7 +3080,8 @@
             "uuid": "26c72fd7-d5b9-497b-be5e-cdfe9715ddac",
             "muscles": [
                 2,
-                9
+                9,
+                17
             ],
             "license": 1,
             "name": "Upright row, on multi press"
@@ -3099,7 +3103,8 @@
             "category": 13,
             "uuid": "5345766a-c092-457a-aa21-8ee6ffa855d4",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Lateral raises"
@@ -3119,7 +3124,8 @@
             "category": 13,
             "uuid": "79a3a34c-262f-4cae-b827-b5a85b11b860",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Lateral raises on cable, one armed"
@@ -3887,7 +3893,8 @@
             "category": 8,
             "uuid": "84b4e711-8b29-4541-ad58-dad967f82390",
             "muscles": [
-                13
+                13,
+                19
             ],
             "license": 1,
             "name": "Preacher Curls"
@@ -4199,7 +4206,8 @@
             "category": 8,
             "uuid": "438678dc-5a62-4496-9458-341af0616626",
             "muscles": [
-                1
+                1,
+                19
             ],
             "license": 1,
             "name": "Reverse bar curl"
@@ -4615,7 +4623,8 @@
             "category": 13,
             "uuid": "880bff63-6798-4ffc-a818-b2a1ccfec0f7",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 3,
             "name": "Arnold Press"
@@ -4640,7 +4649,8 @@
             "category": 13,
             "uuid": "89e6d2ea-9a17-4a77-9a52-d5bcf39d57fd",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Military Press"
@@ -4731,7 +4741,8 @@
             "category": 13,
             "uuid": "a87de062-2101-4dc4-adda-328b4c722c6d",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Front raises"
@@ -4790,7 +4801,7 @@
             "creation_date": "2014-03-30",
             "category": 13,
             "uuid": "69f271a6-5408-49d9-8a3a-1f6088835f30",
-            "muscles": [],
+            "muscles": [18],
             "license": 1,
             "name": "Rear Delt Raises"
         },
@@ -6112,7 +6123,8 @@
             "uuid": "aba7ba7a-6ff0-47d4-ab66-8952e21e38c5",
             "muscles": [
                 2,
-                9
+                9,
+                17
             ],
             "license": 2,
             "name": "Lateral-to-Front Raises"
@@ -6214,7 +6226,8 @@
             "uuid": "97d7eba2-681f-4b14-8e78-7d9b5865d336",
             "muscles": [
                 2,
-                9
+                9,
+                17
             ],
             "license": 2,
             "name": "Upright Row w/ Dumbbells"
@@ -6235,7 +6248,7 @@
             "creation_date": "2015-02-22",
             "category": 13,
             "uuid": "5708d3c5-0016-446b-b3f4-54b2120e8297",
-            "muscles": [],
+            "muscles": [17],
             "license": 2,
             "name": "Lying rotator cuff exercise"
         },
@@ -6307,7 +6320,7 @@
             "creation_date": "2015-03-07",
             "category": 8,
             "uuid": "1ec5352f-41da-408b-8e6c-3fef79475847",
-            "muscles": [],
+            "muscles": [19],
             "license": 2,
             "name": "Hand Grip"
         },
@@ -6357,7 +6370,7 @@
             "creation_date": "2015-03-15",
             "category": 13,
             "uuid": "bd892f71-2b19-41c4-90e2-2cd4df82c621",
-            "muscles": [],
+            "muscles": [18],
             "license": 3,
             "name": "Side raise"
         },
@@ -7505,7 +7518,7 @@
             "creation_date": "2016-02-15",
             "category": 8,
             "uuid": "22eb7cf6-bf6c-42c3-a1c8-85c2fc2ed931",
-            "muscles": [],
+            "muscles": [19],
             "license": 2,
             "name": "Standing Rope Forearm"
         },
@@ -7578,6 +7591,202 @@
             ],
             "license": 2,
             "name": "Seated Triceps Press"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 387,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Attach a D-handle to the low pulley of a cable machine, Opens a New Window.  grasp the handle in your left hand, and step forward (away from the machine) until there is tension on the cable and your arm is drawn slightly behind your body. Stagger your feet so your right leg is in front. Curl the handle but do not allow your elbow to point forward.</p>",
+            "equipment": [
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "4475a095-f266-4f7a-aab3-1720cfe9677f",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Behind-the-Back Cable Curl"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 388,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Grasp the bar with hands wider than shoulder width—if you’re using an Olympic bar, your pinkies should be on the outside knurling. Perform curls.</p>",
+            "equipment": [
+                1
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "fbdfb704-7a21-4745-951e-c27891da9855",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Wide Grip Curl"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 389,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Hook a towel to a cable pulley and stand in front of it. Set up to do a row, holding an end of the towel in each hand. Squeeze your shoulder blades together and row the towel to your rib cage.</p>",
+            "equipment": [
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "eabf5e0d-27d6-4b4b-a173-c9fade7c874d",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Towel Cable Row"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 390,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Hang a towel over a pullup Opens a New Window.  bar and grasp an end in each hand. Hang from the towel and then pull yourself up until your chin is above your hands. If that’s too difficult, simply hang from the towel for as long as you can.</p>",
+            "equipment": [
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "fda5b1c5-0b3a-4606-b50d-6358d6fba44f",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Towel Pullup"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 391,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Sit on the ground and bridge up with your hips so you look like a tabletop. Walk forward on your hands and feet as fast as you can.</p>",
+            "equipment": [
+                7
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "0efdf798-c843-4527-85b3-4cedafa80d4e",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Crab Walk"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 392,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Hang from a jungle gym or length of parallel bars. Walk to the end of the row and back with your hands.</p>",
+            "equipment": [
+                7
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "22601d65-a3a8-4487-857b-3ca415206958",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Parallel Bar Hand Walk"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 393,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [13],
+            "description": "<p>Grasp the bar with hands shoulder width and turn your palms to face you. Pull yourself up until your chin is over the bar. Complete your reps and then come down off the bar.</p>",
+            "equipment": [
+                6
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "b17aeb7a-628a-4724-bebc-c31575412980",
+            "muscles": [
+                19
+            ],
+            "license": 2,
+            "name": "Chinup"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 394,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [],
+            "description": "<p>Grab a pair of dumbbells and find an open area (You'll need at least the length of your arms available)</p>With the dumbbells being held near the hips using a neutral grip (palms facing in), lift them out and up (the wrists will rotate slightly to a supinated grip then back to the neutral position) until they are both held over the head. This is the starting point.</p><p>With the dumbbells overhead, the palms facing each other, position your feet about shoulder width apart keeping a slight bend in the knees.</p><p>Maintaining a bend in the elbow at all times, lower the dumbbells down and away from the body until the humorous (the portion of the arm with the biceps and triceps) of the arms becomes nearly parallel with the ground. Inhale through this motion.</p><p>Return the weights to the overhead starting position while exhaling. Repeat steps 4-5.</p>",
+            "equipment": [
+                3
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "70dc4230-8fa5-4cc7-a887-b57df09bab10",
+            "muscles": [
+                17
+            ],
+            "license": 2,
+            "name": "Reverse Overhead Laterals"
+        },
+        "model": "exercises.exercise"
+    },
+    {
+        "pk": 395,
+        "fields": {
+            "license_author": "derick",
+            "status": "2",
+            "language": 2,
+            "muscles_secondary": [5],
+            "description": "<p>Sit or stand being sure to keep the back straight and grasp the bar with an overhand grip.\nMove the weight off of the stand.\nInhale as the weight is lowered behind the neck. Only lower the weight as far as is comfortable.\nExhale as the weight is pressed vertically.\n\nRepeat steps 3-4.</p></p>",
+            "equipment": [
+                1
+            ],
+            "creation_date": "2018-08-22",
+            "category": 8,
+            "uuid": "e635948b-7626-41ab-bc67-d4b5f1abc1e0",
+            "muscles": [
+                17,
+                18
+            ],
+            "license": 2,
+            "name": "Rear Military Press"
         },
         "model": "exercises.exercise"
     },
