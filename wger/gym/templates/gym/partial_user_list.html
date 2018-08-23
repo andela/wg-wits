@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'bower_components/datatables/media/css/dataTables.bootstrap.min.css' %}">
 <script src="{% static 'bower_components/datatables/media/js/jquery.dataTables.min.js' %}" ></script>
 <script src="{% static 'bower_components/datatables/media/js/dataTables.bootstrap.min.js' %}" ></script>
+<script src="{% static 'js/compare.js' %}"></script>
 <script>
 $(document).ready( function () {
     /* Make table sortable */
@@ -13,10 +14,11 @@ $(document).ready( function () {
     });
 });
 </script>
-
+<button class="btn btn-primary" onclick="compareMembers(this)">Compare Members</button>
 <table class="table table-hover" id="main_member_list">
 <thead>
 <tr>
+    <th></th>
     {% for key in user_table.keys %}
         <th>{{ key }}</th>
     {% endfor %}
@@ -26,6 +28,11 @@ $(document).ready( function () {
 <tbody>
 {% for current_user in user_table.users %}
 <tr>
+    <td>
+        <input onchange="selectUser(this, `{{current_user.obj.username}}`)"
+               name="{{current_user.obj}}"
+               type="checkbox">
+    </td>
     <td>
         {{current_user.obj.pk}}
     </td>

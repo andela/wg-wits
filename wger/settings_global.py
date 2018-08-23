@@ -108,6 +108,7 @@ BOWER_INSTALLED_APPS = (
     'sortablejs#1.4.x',
     'tinymce',
     'tinymce-dist',
+    'chart.js',
 )
 
 

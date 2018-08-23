@@ -16,6 +16,7 @@ import datetime
 import decimal
 
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
@@ -77,6 +78,31 @@ class WeightEntryAccessTestCase(WorkoutManagerTestCase):
         self.user_logout()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+    def test_get_members_weight_data(self):
+        user = User.objects.filter(pk=1).first()
+        if user:
+            wg = WeightEntry(user=user, weight=85.50, date=datetime.datetime.now())
+            wg.save()
+        url = "{0}?usernames={1}".format(reverse('weight:compare-data'), user.username)
+        self.user_login('admin')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_weight_data(self):
+        user = User.objects.filter(pk=1).first()
+        date = datetime.datetime.now().date()
+        if user:
+            wg = WeightEntry(user=user, weight=85.50, date=date)
+            wg.save()
+        url = reverse('weight:weight-data')
+        self.user_login('admin')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        url = "{0}?date_min={1}&date_max={1}".format(url, date)
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, 200)
 
 
 class AddWeightEntryTestCase(WorkoutManagerAddTestCase):
