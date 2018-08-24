@@ -114,6 +114,11 @@ $(document).ready(function() {
                     </div>
                 </div>
                 {% endfor %} <!--for exercise in set-->
+
+                {% if set.obj.dropset %}
+                <div class="label label-primary">drop-set</div>
+                {% endif %}
+
                 </div>
             </td>
         </tr>

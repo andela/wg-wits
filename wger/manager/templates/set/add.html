@@ -35,6 +35,58 @@ function wgerCustomPageInit()
 
     {% csrf_token %}
     {% render_form_field form.exercises %}
+    <div class="hidden">
+            {% render_form_field form.dropset %}
+
+    </div>
+    <div class="form-group">
+        <label for="drop-set" class="control-label col-md-3">
+            Set Type:
+        </label>
+        <div class="col-md-9">
+            <select id="drop-set" class="form-control" onchange="setDropSet()">
+              <option value="drop-set">Drop Set</option>
+              <option selected value="normal-set">Normal Set</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="max-weight">
+        <label for="dropset-max-weight" class="control-label col-md-3">
+            Max Weight:
+        </label>
+        <div class="col-md-9">
+            <input id="dropset-max-weight" type="number" class="form-control" value="15" oninput="populateDropSetField()">
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="weight-drop">
+        <label for="dropset-weight-drop" class="control-label col-md-3">
+            Weight drop (%):
+        </label>
+        <div class="col-md-9">
+            <input id="dropset-weight-drop" type="number" class="form-control" value="20" oninput="populateDropSetField()">
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="min-reps">
+        <label for="dropset-max-weight" class="control-label col-md-3">
+            Min Amount(Reps):
+        </label>
+        <div class="col-md-9">
+            <input id="dropset-min-rep" type="number" class="form-control" value="10" oninput="populateDropSetField()">
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="reps-increment">
+        <label for="reps-increment-value" class="control-label col-md-3">
+            Added Amount:
+        </label>
+        <div class="col-md-9">
+            <input id="reps-increment-value" type="number" class="form-control" value="3" oninput="populateDropSetField()">
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="id_sets" class="control-label col-md-3">
             {{form.sets.label}}:
