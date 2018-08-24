@@ -56,6 +56,7 @@ from wger.utils.widgets import (
 )
 from wger.utils.constants import DATE_FORMATS
 from wger.utils.widgets import Html5DateInput
+from django.forms.widgets import CheckboxInput
 
 
 class DemoUserForm(Form):
@@ -88,7 +89,7 @@ class SetForm(ModelForm):
     class Meta:
         model = Set
         exclude = ('order', 'exerciseday')
-        widgets = {'exercises': ExerciseAjaxSelect(), }
+        widgets = {'exercises': ExerciseAjaxSelect(), 'dropset': CheckboxInput()}
 
     # We need to overwrite the init method here because otherwise Django
     # will output a default help text, regardless of the widget used

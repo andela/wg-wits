@@ -459,6 +459,85 @@ function updateAllExerciseFormset() {
   }
 }
 
+function setDropsetScale() { // eslint-disable-line
+  var setValue = $('#drop-set-set-value').val();
+
+  $('#id_sets').attr('value', setValue);
+  updateAllExerciseFormset();
+}
+
+function populateDropSetField() {
+  var exerciseId = $('.ajax-exercise-select a').parent('div').find('input').val();
+  var numOfSets = $('#id_sets').val();
+  var maxWeight = $('#dropset-max-weight').val();
+  var minReps = $('#dropset-min-rep').val();
+  var weightPercent = 1;
+  var additionalReps = 0;
+  var weightValue;
+  var repsValue;
+  for (var i = 0; i < parseInt(numOfSets, 10); i++) { // eslint-disable-line
+    if (i > 0) {
+      weightPercent -= (parseInt($('#dropset-weight-drop').val(), 10) / 100);
+      additionalReps += parseInt($('#reps-increment-value').val(), 10);
+    }
+
+    if (parseInt(weightPercent * maxWeight, 10) > 0) {
+      weightValue = parseInt(weightPercent * maxWeight, 10);
+    } else {
+      weightValue = 0;
+    }
+
+    if (parseInt(additionalReps + parseInt(minReps, 10), 10) > 0) {
+      repsValue = parseInt(additionalReps +
+      parseInt(minReps, 10), 10);
+    } else {
+      repsValue = 0;
+    }
+
+    $('#id_exercise' + exerciseId + '-' + i + '-weight').attr('value', weightValue);
+    $('#id_exercise' + exerciseId + '-' + i + '-reps').attr('value', repsValue);
+  }
+}
+
+function removeClassHidden(divTags) {
+  $.each(divTags, function (index, item) {
+    item.removeClass('hidden');
+  });
+}
+
+function addClassHidden(divTags) {
+  $.each(divTags, function (index, item) {
+    item.addClass('hidden');
+  });
+}
+
+function setDropSet() {  // eslint-disable-line
+  var setScale = $('#id_sets');
+  var typeValue = $('#drop-set');
+  var maxWeight = $('#max-weight');
+  var minReps = $('#min-reps');
+  var helpLink = $('#dropset-help');
+  var dropSet = $('#id_dropset');
+  var weightIndex = $('#weight-drop');
+  var repsIndex = $('#reps-increment');
+  if (typeValue.val() === 'drop-set') {
+    dropSet.prop('checked', true);
+    setScale.attr('min', '3');
+    setScale.attr('max', '5');
+    setScale.attr('value', '4');
+    $('#id_sets_value').html('4');
+    removeClassHidden([maxWeight, minReps, helpLink, weightIndex, repsIndex]);
+    updateAllExerciseFormset();
+    populateDropSetField();
+  } else {
+    dropSet.removeAttr('checked');
+    dropSet.prop('checked', false);
+    setScale.attr('min', '1');
+    setScale.attr('max', '10');
+    addClassHidden([maxWeight, minReps, helpLink, weightIndex, repsIndex]);
+  }
+}
+
 /*
  Remove the result DIV (also contains the hidden form element) with the exercise
  formsets when the user clicks on the delete link
