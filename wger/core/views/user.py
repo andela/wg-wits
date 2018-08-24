@@ -14,6 +14,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
+import requests
+import base64
+import datetime
+import os
+from fitbit import FitbitOauth2Client
+
+
 import logging
 
 from django.shortcuts import render, get_object_or_404
@@ -587,3 +594,73 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
             "active": self.active,
         }
         return context
+
+
+@login_required
+def fitbit_data(request):
+    '''
+    Connect the users fitbit account to wger
+    '''
+    template_data = {}
+    client_id = os.environ.get('FITBIT_WEIGHT_CLIENT_ID')
+    client_secret = os.environ.get('FITBIT_WEIGHT_CLIENT_SECRET')
+    redirect_uri = 'http://127.0.0.1:8000/en/users/fitbit'
+    client = FitbitOauth2Client(client_id, client_secret)
+    """
+        Fitbit redirects back with a code in the url and
+        the code is now used to used to get the access_token
+    """
+
+    if 'code' in request.GET:
+        code = request.GET['code']
+        response = fitbit_response(code, client_id, client_secret, redirect_uri, client)
+        if 'access_token' in response:
+            token = response['access_token']
+            user_id = response['user_id']
+            headers = {
+                'Authorization': 'Bearer ' + token
+            }
+
+            response = requests.get('https://api.fitbit.com/1/user/' +
+                                    user_id + '/body/log/weight/date/'
+                                    '2018-08-01/2018-08-23.json', headers=headers).json()
+            data = []
+            # Set an array of dictinaries of each weight entry,
+            # calculating the weight change on each. If the index of
+            # the response['weight'] is 0, that means we are on the
+            # first element and so the change is just set to zero because
+            # there is no previous weight entry to compare against.
+            for weight_data in response['weight']:
+                date = weight_data['date']
+                weight = weight_data['weight']
+                if response['weight'].index(weight_data) > 0:
+                    change = weight - \
+                        response['weight'][(response['weight'].index(weight_data) - 1)]['weight']
+                else:
+                    change = 0
+                bmi = weight_data['bmi']
+                data.append(
+                    {"date": date,
+                     "weight": weight,
+                     "change": change,
+                     "bmi": bmi
+                     })
+
+            template_data['data'] = data
+            return render(request, 'user/fitbit.html', template_data)
+    template_data['fitbit_authentication'] = client.authorize_token_url(
+        redirect_uri=redirect_uri)[0]
+    return render(request, 'user/fitbit.html', template_data)
+
+
+def fitbit_response(code, client_id, client_secret, redirect_uri, client):
+    data = "client_id=" + client_id + "&" +\
+        "grant_type=" + "authorization_code" + "&" +\
+        "redirect_uri=" + redirect_uri + "&" +\
+        "code=" + code
+    headers = {
+        'Authorization': 'Basic ' +
+        base64.b64encode((client_id + ":" + client_secret).encode('UTF-8')).decode('ascii'),
+        'Content-Type': 'application/x-www-form-urlencoded'}
+    response = requests.post(client.request_token_url, data=data, headers=headers).json()
+    return response
