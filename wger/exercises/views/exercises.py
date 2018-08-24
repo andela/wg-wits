@@ -58,6 +58,7 @@ from wger.utils.widgets import (
     TranslatedOriginalSelectMultiple
 )
 from wger.config.models import LanguageConfig
+from wger.config.models import Language
 from wger.weight.helpers import process_log_entries
 
 
@@ -77,7 +78,10 @@ class ExerciseListView(ListView):
         '''
         Filter to only active exercises in the configured languages
         '''
-        languages = load_item_languages(LanguageConfig.SHOW_ITEM_EXERCISES)
+        url = self.request.META['PATH_INFO']
+        lang_name = url[1:3]
+        languages = Language.objects.filter(short_name=lang_name)
+
         return Exercise.objects.accepted() \
             .filter(language__in=languages) \
             .order_by('category__id') \
