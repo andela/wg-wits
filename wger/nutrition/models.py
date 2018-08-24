@@ -552,6 +552,13 @@ class Meal(models.Model):
     time = Html5TimeField(null=True,
                           blank=True,
                           verbose_name=_('Time (approx)'))
+    already_eaten = models.NullBooleanField(
+        blank=True,
+        null=True,
+        verbose_name=_('Eaten'),
+        editable=False
+
+    )
 
     def __str__(self):
         '''
