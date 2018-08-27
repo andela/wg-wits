@@ -30,7 +30,8 @@ from wger.nutrition.views import (
     meal,
     meal_item,
     unit,
-    unit_ingredient
+    unit_ingredient,
+    eaten_meal,
 )
 
 # sub patterns for nutritional plans
@@ -61,7 +62,6 @@ patterns_plan = [
         name='export-pdf'),
 ]
 
-
 # sub patterns for meals
 patterns_meal = [
     url(r'^(?P<plan_pk>\d+)/meal/add/$',
@@ -73,6 +73,12 @@ patterns_meal = [
     url(r'^(?P<id>\d+)/delete/$',
         meal.delete_meal,
         name='delete'),
+]
+# sub patterns for already eaten meals
+patterns_eaten_meal = [
+    url(r'^(?P<plan_pk>\d+)/meal/add/$',
+        login_required(eaten_meal.EatenMealCreateView.as_view()),
+        name='add'),
 ]
 
 
@@ -184,6 +190,7 @@ patterns_calories = [
 urlpatterns = [
     url(r'^', include(patterns_plan, namespace="plan")),
     url(r'^meal/', include(patterns_meal, namespace="meal")),
+    url(r'^eaten-meal/', include(patterns_eaten_meal, namespace="eaten_meal")),
     url(r'^meal/item/', include(patterns_meal_item, namespace="meal_item")),
     url(r'^ingredient/', include(patterns_ingredient, namespace="ingredient")),
     url(r'^unit/', include(patterns_weight_unit, namespace="weight_unit")),
