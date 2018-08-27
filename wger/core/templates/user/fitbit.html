@@ -1,0 +1,83 @@
+
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{#       #}
+{# Title #}
+{#       #}
+{% block title %}{% trans "Fitbit Weight data" %}
+{% endblock %}
+
+{#        #}
+{# Header #}
+{#        #}
+{% block header %}
+
+{% endblock %}
+
+
+
+{#         #}
+{# Content #}
+{#         #}
+{% block content %}
+
+<div id="current-username" data-current-username="{{ owner_user.username }}"></div>
+
+
+{% if not data %}
+<p>
+    {% trans "There is no weight data here because fibit hasnt synced." %}
+    <a href="{{ fitbit_authentication }}"> Connect to view your fitbit exercises . </a>
+
+</p>
+{% endif %}
+{% if data %}
+<table class="table">
+    <tr>
+        <th>{% trans 'Date' %}</th>
+        <th>{% trans 'Weight' %}</th>
+        <th>{% trans 'Change' %}</th>
+        <th>{% trans 'Body Mass Index' %}</th>
+    </tr>
+    {% for datum in data %}
+        <tr>
+            <td>
+                {{ datum.date }}
+            </td>
+            <td>
+                {{ datum.weight }}
+            </td>
+            <td>
+            {{datum.change}}
+            </td>
+            <td>
+                {{datum.bmi}}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<!-- Since we are not persisting fitbit data,
+reloading will lead to losing it so we prompt the user -->
+{% if data %}
+<script>
+$(window).on('beforeunload', function(){
+    return 'Are you sure you want to leave?';
+});
+</script>
+{% endif %}
+{% endblock %}
+
+{#          #}
+{# Side bar #}
+{#          #}
+{% block sidebar %}
+{% endblock %}
+
+{#         #}
+{# Options #}
+{#         #}
+{% block options %}
+{% endblock %}
+

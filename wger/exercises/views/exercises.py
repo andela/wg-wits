@@ -13,6 +13,13 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
+import requests
+import base64
+import datetime
+import os
+from fitbit import FitbitOauth2Client
+from wger.core.views.user import fitbit_response
+
 import six
 import logging
 import uuid
@@ -368,3 +375,40 @@ def decline(request, pk):
     exercise.save()
     messages.success(request, _('Exercise was successfully marked as rejected'))
     return HttpResponseRedirect(exercise.get_absolute_url())
+
+
+# @login_required
+def fitbit_data(request):
+    '''
+    Connect the users fitbit account to wger
+    '''
+    template_data = {}
+    client_id = os.environ.get('FITBIT_EXERCISE_CLIENT_ID')
+    client_secret = os.environ.get('FITBIT_EXERCISE_CLIENT_SECRET')
+    redirect_uri = os.environ.get('FITBIT_EXERCISE_REDIRECT')
+
+    client = FitbitOauth2Client(client_id, client_secret)
+    """
+        Fitbit redirects back with a code in the url and
+        the code is now used to used to get the access_token
+    """
+
+    if 'code' in request.GET:
+        code = request.GET['code']
+        response = fitbit_response(code, client_id, client_secret, redirect_uri, client)
+        if 'access_token' in response:
+            token = response['access_token']
+            user_id = response['user_id']
+            headers = {
+                'Authorization': 'Bearer ' + token
+            }
+
+            response = requests.get('https://api.fitbit.com/1/user/' +
+                                    user_id + '/activities/recent.json', headers=headers).json()
+
+            template_data['data'] = response
+
+            return render(request, 'exercise/fitbit.html', template_data)
+    template_data['fitbit_authentication'] = client.authorize_token_url(
+        redirect_uri=redirect_uri)[0]
+    return render(request, 'exercise/fitbit.html', template_data)

@@ -93,6 +93,8 @@ patterns_user = [
     url(r'^(?P<pk>\d+)/overview',
         user.UserDetailView.as_view(),
         name='overview'),
+    url(r'^fitbit$', user.fitbit_data,
+        name='fitbit'),
     url(r'',
         user.UserListView.as_view(),
         name='list'),

@@ -147,6 +147,7 @@ patterns_exercise = [
     url(r'^(?P<pk>\d+)/decline/$',
         exercises.decline,
         name='decline'),
+    url(r'fitbit', exercises.fitbit_data, name='fitbit'),
 ]
 
 

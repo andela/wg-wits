@@ -34,3 +34,7 @@ django-cors-headers
 
 # Python3 compatibility
 six
+
+#fitbit
+fitbit==0.3.0
+

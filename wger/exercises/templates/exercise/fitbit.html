@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{#       #}
+{# Title #}
+{#       #}
+{% block title %}{% trans "Fitbit Exercise data" %}
+{% endblock %}
+
+{#        #}
+{# Header #}
+{#        #}
+{% block header %}
+
+{% endblock %}
+
+
+
+{#         #}
+{# Content #}
+{#         #}
+{% block content %}
+
+<div id="current-username" data-current-username="{{ owner_user.username }}"></div>
+
+
+{% if not data %}
+<p>
+    {% trans "There are no exercises here because fibit hasnt synced." %}
+    <a href="{{ fitbit_authentication }}"> Connect to view your fitbit exercises . </a>
+
+</p>
+{% endif %}
+
+{% if data %}
+<table class="table">
+    <tr>
+        <th>{% trans 'Activity Name' %}</th>
+        <th>{% trans 'Calories' %}</th>
+        <th>{% trans 'Duration (milisecs)' %}</th>
+        <th>{% trans 'Discription' %}</th>
+        <th>{% trans 'Distance' %}</th>
+    </tr>
+    {% for datum in data %}
+        <tr>
+            <td>
+                {{ datum.name }}
+            </td>
+            <td>
+                {% if datum.calories %}
+                {{ datum.calories }}
+                {% else %}
+                {% trans 'N/A' %}
+                {% endif %}
+            </td>
+            
+            <td>
+                {% if datum.duration %}
+                {{ datum.duration }}
+                {% else %}
+                {% trans 'N/A'%}
+                {% endif %}
+            </td>
+            <td>
+                {% if datum.description %}
+                {{ datum.description }}
+                {% else %}
+                    {% trans 'N/A' %}
+                {% endif %}
+            </td>
+            <td>
+                {% if datum.distance%}
+                    {{datum.distance}}
+                {% else %}
+                    {% trans 'N/A' %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<!-- Since we are not persisting fitbit data,
+reloading will lead to losing it so we prompt the user -->
+{% if data %}
+<script>
+$(window).on('beforeunload', function(){
+    return 'Are you sure you want to leave?';
+});
+</script>
+{% endif %}
+{% endblock %}
+
+{#          #}
+{# Side bar #}
+{#          #}
+{% block sidebar %}
+{% endblock %}
+
+{#         #}
+{# Options #}
+{#         #}
+{% block options %}
+{% endblock %}
