@@ -16,7 +16,8 @@
             "fat_saturated": "3.244", 
             "fibres": "0.0", 
             "protein": "25.63", 
-            "carbohydrates": "0.1251"
+            "carbohydrates": "0.1251",
+            "license_author_id":2
         }
     },
     {
@@ -36,7 +37,8 @@
             "fat_saturated": "3", 
             "fibres": "5.0", 
             "protein": "25.63", 
-            "carbohydrates": "0.1251"
+            "carbohydrates": "0.1251",
+            "license_author_id":1
         }
     },
     {
@@ -56,7 +58,8 @@
             "fat_saturated": "3", 
             "fibres": "5.0", 
             "protein": "25.63", 
-            "carbohydrates": "0.1551"
+            "carbohydrates": "0.1551",
+            "license_author_id":3
         }
     },
     {
@@ -76,7 +79,8 @@
             "fat_saturated": "0", 
             "fibres": "0", 
             "protein": "0", 
-            "carbohydrates": "99.0"
+            "carbohydrates": "99.0",
+            "license_author_id":3
         }
     },
     {
@@ -96,7 +100,8 @@
             "fat_saturated": "0", 
             "fibres": "0", 
             "protein": "0", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":5
         }
     },
     {
@@ -116,7 +121,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":4
         }
     },
     {
@@ -136,7 +142,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -156,7 +163,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -176,7 +184,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -196,7 +205,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -216,7 +226,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -236,7 +247,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -256,7 +268,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
     {
@@ -276,7 +289,8 @@
             "fat_saturated": "0", 
             "fibres": "20", 
             "protein": "10", 
-            "carbohydrates": "5.0"
+            "carbohydrates": "5.0",
+            "license_author_id":1
         }
     },
 

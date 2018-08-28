@@ -158,3 +158,24 @@ class MealForm(MealItemForm):
 
     def __init__(self, *args, **kwargs):
         super(MealForm, self).__init__(*args, **kwargs)
+
+
+class IngredientForm(forms.ModelForm):
+    license_author = forms.CharField(required=False)
+
+    class Meta:
+        model = Ingredient
+        fields = ('name',
+                  'energy',
+                  'protein',
+                  'carbohydrates',
+                  'carbohydrates_sugar',
+                  'fat',
+                  'fat_saturated',
+                  'fibres',
+                  'sodium',
+                  'license',
+                  )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

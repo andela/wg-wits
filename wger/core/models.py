@@ -692,3 +692,28 @@ class WeightUnit(models.Model):
         This is done basically to not litter the code with magic IDs
         '''
         return self.id in (1, 2)
+
+
+@python_2_unicode_compatible
+class Author(models.Model):
+    '''Author for an exercise'''
+    name = models.CharField(verbose_name=_('Name'),
+                            max_length=50,
+                            blank=True,
+                            null=True,
+                            help_text=_('If you are not the author, enter the name or '
+                                        'source here. This is needed for some licenses '
+                                        'e.g. the CC-BY-SA.')
+                            )
+
+    class Meta:
+        '''
+        Set Meta options
+        '''
+        ordering = ["name", ]
+
+    def __str__(self):
+        '''
+        Return a more human-readable representation
+        '''
+        return u"{0}".format(self.name)
