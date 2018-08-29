@@ -429,7 +429,7 @@ class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
     pk_after = None
     anonymous_fail = True
     data = {}
-    data_ignore = ()
+    data_ignore = ('ingredient', 'amount',)
     fileupload = None
     '''
     If the form requires a file upload, specify the field name and the file path

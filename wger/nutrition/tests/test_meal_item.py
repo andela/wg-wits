@@ -17,8 +17,19 @@ from django.core.urlresolvers import reverse
 
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
-from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
-from wger.nutrition.models import MealItem
+from wger.core.tests.base_testcase import WorkoutManagerEditTestCase, WorkoutManagerTestCase
+from wger.nutrition.models import MealItem, NutritionPlan
+
+
+class MealItemTestCase(WorkoutManagerTestCase):
+    def test_delete_meal_item(self):
+        self.user_login('test')
+        plan = NutritionPlan.objects.filter(pk=4).first()
+        meal = plan.meal_set.first()
+        meal_item = MealItem.objects.filter(meal__id=meal.id).first()
+        url = reverse('nutrition:meal_item:delete', kwargs={'item_id': meal_item.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
 
 
 class EditMealItemUnitTestCase(WorkoutManagerEditTestCase):

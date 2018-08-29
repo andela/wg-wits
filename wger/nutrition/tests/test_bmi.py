@@ -117,3 +117,22 @@ class BmiTestCase(WorkoutManagerTestCase):
         entry = WeightEntry.objects.filter(user=user).latest()
         self.assertEqual(entry.weight, 80)
         self.assertEqual(entry.date, datetime.date.today())
+
+    def test_chart_data_with_metrics(self):
+        self.user_login('test')
+        response = self.client.get(reverse('nutrition:bmi:chart-data'))
+        self.assertEqual(response.status_code, 200)
+        data = response.content.decode('utf-8')
+        content = json.loads(data)
+        self.assertEqual(content[0]['weight'], 30)
+
+    def test_chart_data_with_no_metrics(self):
+        self.user_login('admin')
+        user = User.objects.filter(pk=1).first()
+        user.userprofile.weight_unit = "g"
+        user.userprofile.save()
+        response = self.client.get(reverse('nutrition:bmi:chart-data'))
+        self.assertEqual(response.status_code, 200)
+        data = response.content.decode('utf-8')
+        content = json.loads(data)
+        self.assertEqual(content[0]['weight'], 66.139)

@@ -24,8 +24,7 @@ from wger.core.tests.base_testcase import (
     WorkoutManagerAddTestCase
 )
 from wger.nutrition.models import Meal
-from wger.nutrition.models import NutritionPlan
-from unittest import skip
+from wger.nutrition.models import NutritionPlan, Ingredient
 
 
 class MealRepresentationTestCase(WorkoutManagerTestCase):
@@ -51,18 +50,41 @@ class EditMealTestCase(WorkoutManagerEditTestCase):
     data = {'time': datetime.time(8, 12)}
 
 
-@skip('Skip pending fixing AddMealTestCase')
 class AddMealTestCase(WorkoutManagerAddTestCase):
     '''
     Tests adding a Meal
     '''
-    # FIXME: update method to cater for new add meal flow in the form
-
     object_class = Meal
     url = reverse('nutrition:meal:add', kwargs={'plan_pk': 4})
-    data = {'time': datetime.time(9, 2)}
+    data = {'time': datetime.time(9, 2), 'ingredient': 5,
+            'amount': 23}
     user_success = 'test'
     user_fail = 'admin'
+
+
+class AddEatenMealTestCase(WorkoutManagerAddTestCase):
+    '''
+    Tests adding an eaten meal
+    '''
+    object_class = Meal
+    url = reverse('nutrition:eaten_meal:add', kwargs={'plan_pk': 4})
+    data = {'time': datetime.time(9, 2), 'ingredient': 5,
+            'amount': 23}
+    user_success = 'test'
+    user_fail = 'admin'
+
+
+class MealTestCase(WorkoutManagerTestCase):
+    def test_delete_meal(self):
+        '''
+        Tests deleting a meal
+        '''
+        self.user_login('test')
+        plan = NutritionPlan.objects.filter(pk=4).first()
+        meal = plan.meal_set.first()
+        url = reverse('nutrition:meal:delete', kwargs={'id': meal.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
 
 
 class PlanOverviewTestCase(WorkoutManagerTestCase):
