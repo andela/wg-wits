@@ -17,9 +17,14 @@
 import logging
 import uuid
 import datetime
+import json
+from decimal import Decimal
 
+from django.http import HttpResponse
+from django.utils.datastructures import MultiValueDictKeyError
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.contrib import messages
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy, ugettext as _
@@ -27,16 +32,29 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView, UpdateView
 
+from django.db.models import Q
 from wger.core.models import (
     RepetitionUnit,
     WeightUnit
 )
 from wger.manager.models import (
     Workout,
+    Day,
+    Set,
+    Setting,
     WorkoutSession,
     WorkoutLog,
     Schedule,
-    Day
+)
+from wger.exercises.models import (
+    Exercise,
+    Muscle,
+    Equipment,
+    ExerciseCategory
+)
+from wger.core.models import (
+    Language,
+    License
 )
 from wger.manager.forms import (
     WorkoutForm,
@@ -61,6 +79,90 @@ def overview(request):
     '''
     An overview of all the user's workouts
     '''
+
+    if request.method == 'POST':
+        try:
+            file = request.FILES['workoutfile']
+        except MultiValueDictKeyError:
+            messages.info(request, 'No File was Chosen for Importation!')
+            return HttpResponseRedirect('overview')
+
+        try:
+            data_bytes = file.read()
+            data = data_bytes.decode("utf8")
+            workouts = json.loads(data)
+
+            for workout in workouts:
+                new_workout = Workout(cycle_kind=workout['cycle_kind'], comment=workout['comment'])
+                new_workout.user = request.user
+                new_workout.save()
+
+                for day in workout['day']:
+                    workout_day = Day(description=day['description'], training=new_workout)
+                    workout_day.save()
+
+                    for day_item in day['daysofweek']:
+                        workout_day.day.add(day_item['dayofweek'])
+
+                    for workout_set in day['sets']:
+                        new_workout_set = Set(
+                            order=workout_set['order'],
+                            sets=workout_set['sets'],
+                            exerciseday=workout_day
+                        )
+                        new_workout_set.save()
+
+                        exercise_id_value = 0
+
+                        for exercise in workout_set['exercises']:
+                            workout_exercise = Exercise.objects.filter(
+                                name=exercise['name'],
+                                uuid=exercise['uuid']
+                            ).first()
+
+                            if workout_exercise is None:
+                                workout_exercise = Exercise(
+                                    license_author=exercise['license_author'],
+                                    status=exercise['status'],
+                                    description=exercise['description'],
+                                    name=exercise['name'],
+                                    creation_date=exercise['creation_date'],
+                                    category_id=exercise['category']
+                                )
+                                workout_exercise.save()
+
+                                for muscle in exercise['muscles']:
+                                    workout_exercise.muscles.add(muscle['id'])
+
+                                for muscle_secondary in exercise['muscles']:
+                                    workout_exercise.muscles_secondary.add(muscle_secondary['id'])
+
+                                for equipment in exercise['equipment']:
+                                    workout_exercise.equipment.add(equipment['id'])
+
+                            exercise_id_value = workout_exercise.id
+
+                        # AFTER VERIFY THAT THE EXERCISE EXISTS OR CREATING IT
+                        # CREATE THE RELATIONSHIP WITH SET_EXERCISES TABLE
+                        new_workout_set.exercises.add(exercise_id_value, 1)
+
+                        for setting in exercise['settings']:
+                            set_setting = Setting(
+                                reps=setting['reps'],
+                                order=setting['order'],
+                                comment=setting['comment'],
+                                weight=Decimal(setting['weight']),
+                                repetition_unit_id=setting['repetition_unit_id'],
+                                weight_unit_id=setting['weight_unit_id'],
+                                exercise_id=exercise_id_value,
+                                set=new_workout_set
+                            )
+
+                            set_setting.save()
+
+        except (ValueError, KeyError, Exception) as e:
+            messages.info(request, 'The Workout JSON file is invalid.')
+            return HttpResponseRedirect('overview')
 
     template_data = {}
 
@@ -223,6 +325,97 @@ def add(request):
     workout.user = request.user
     workout.save()
     return HttpResponseRedirect(workout.get_absolute_url())
+
+
+@login_required
+def export_user_workouts(request):
+    user = request.user
+    workouts = Workout.objects.filter(user=user).all()
+    user_workouts = []
+    for workout in workouts:
+        days = Day.objects.filter(training=workout).all()
+
+        user_workouts.append({
+            'id': workout.id,
+            'cycle_kind': workout.cycle_kind,
+            'comment': workout.comment,
+            'creation_date': str(workout.creation_date),
+            'day': [
+                {
+                    'id': day.id,
+                    'description': day.description,
+                    'daysofweek': [
+                        {
+                            'dayofweek': dayofweek.id
+                        } for dayofweek in day.day.all()
+                    ],
+                    'sets': [
+                        {
+                            'id': workout_set.id,
+                            'sets': workout_set.sets,
+                            'order': workout_set.order,
+                            'exercises': [
+                                {
+                                    'id': exercise.id,
+                                    'license_author': exercise.license_author,
+                                    'status': exercise.status,
+                                    'description': exercise.description,
+                                    'name': exercise.name,
+                                    'creation_date': str(exercise.creation_date),
+                                    'uuid': exercise.uuid,
+                                    'category': exercise.category_id,
+                                    'muscles': [
+                                        {
+                                            'id': muscle.id,
+                                            'name': muscle.name,
+                                            'is_front': muscle.is_front
+                                        } for muscle in Muscle.objects.filter(
+                                            exercise=exercise
+                                        ).all()
+                                    ],
+                                    'muscles_secondary': [
+                                        {
+                                            'id': muscle_secondary.id,
+                                            'name': muscle_secondary.name,
+                                            'is_front': muscle_secondary.is_front
+                                        } for muscle_secondary in exercise.muscles_secondary.all()
+                                    ],
+                                    'equipment': [
+                                        {
+                                            'id': equipment.id,
+                                            'name': equipment.name,
+                                        } for equipment in Equipment.objects.filter(
+                                            exercise=exercise
+                                        ).all()
+                                    ],
+                                    'settings': [
+                                        {
+                                            'reps': setting.reps,
+                                            'order': setting.order,
+                                            'comment': setting.comment,
+                                            'weight': str(setting.weight),
+                                            'repetition_unit_id': setting.repetition_unit_id,
+                                            'weight_unit_id': setting.repetition_unit_id
+                                        } for setting in Setting.objects.filter(
+                                            Q(exercise=exercise) | Q(set=workout_set)
+                                        ).all()
+                                    ]
+                                } for exercise in workout_set.exercises.all()
+                            ]
+                        } for workout_set in Set.objects.filter(
+                            Q(order=workout.id) | Q(exerciseday_id=day.id)
+                        ).all()
+                    ]
+
+                } for day in days
+            ]
+        })
+
+    json_workouts = json.dumps(user_workouts)
+    filename = '{0}-workouts'.format(user.username)
+    response = HttpResponse(json_workouts, content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename="{}.json"'.format(filename)
+    return response
 
 
 class WorkoutDeleteView(WgerDeleteMixin, LoginRequiredMixin, DeleteView):
