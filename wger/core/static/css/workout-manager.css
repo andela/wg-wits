@@ -21,16 +21,16 @@
  *
  **************************************************************/
 
-#main-footer{
-    background: none repeat scroll 0% 0% #EEE;
-    border-top: 1px solid #E5E5E5;
+#main-footer {
+    background: none repeat scroll 0% 0% #eee;
+    border-top: 1px solid #e5e5e5;
     border-bottom: 1px solid #000;
     padding-top: 1em;
     padding-bottom: 1em;
 }
 
-#main{
-    background-color: #FFF;
+#main {
+    background-color: #fff;
 }
 
 .social-logins {
@@ -47,41 +47,38 @@
  * Images in links are vertically aligned
  */
 
-a img{
+a img {
     vertical-align: middle;
 }
 
 /*
  * "invisible" elements, simply hidden (they still take all the space)
  */
-.invisible{
+.invisible {
     display: none;
 }
 
-.align-right
-{
+.align-right {
     text-align: right;
 }
 
-.sortable-settings
-{
+.sortable-settings {
     border: 1px solid black;
 }
 
-.sortable-settings-drag
-{
+.sortable-settings-drag {
     padding-left: 1em;
     padding-right: 1em;
     background-color: #babdb6;
-    border-bottom:1px solid black;
+    border-bottom: 1px solid black;
 }
 
 /*
  * Set a more appropriate cursor to the drag'n'drop handle on the
  * workout view
  */
-.dragndrop-handle{
-    cursor:move
+.dragndrop-handle {
+    cursor: move;
 }
 
 /**************************************************************
@@ -90,16 +87,15 @@ a img{
 /*
  * Hide the edit options (edit, delete) on tables, only show them when the mouse is over the row
  */
-.editoptions
-{
+.editoptions {
     visibility: hidden;
 }
 
-tr:hover .editoptions, tbody tr:hover td .editoptions, ul:hover .editoptions
-{
+tr:hover .editoptions,
+tbody tr:hover td .editoptions,
+ul:hover .editoptions {
     visibility: visible;
 }
-
 
 /*
  * Deactivate the default background color on hover
@@ -112,7 +108,6 @@ tr:hover .editoptions, tbody tr:hover td .editoptions, ul:hover .editoptions
 .no-hover:hover {
     background-color: transparent;
 }
-
 
 /*
  * Images inside a link are set to greyscale till mouseover
@@ -140,21 +135,33 @@ a:hover img
 /*
  * Set the sizes for the background where the muscles are shown on the exercise view page
  */
-div.muscle-background
-{
+div.muscle-background {
     width: 180px;
     height: 276px;
     background-size: 150px;
     background-repeat: no-repeat;
 }
 
+#front-img {
+    display: block;
+    transform: translate(-25px, -48px) scale(0.75);
+    opacity: 0;
+    position: absolute;
+    top: 47px;
+}
+#behind-img {
+    display: block;
+    transform: translate(-26px, -50px) scale(0.74, 0.701);
+    opacity: 0;
+    position: absolute;
+    top: 47px;
+}
 /*
  * Set an additional padding to the generated DIV on the edit set page
  */
-#exercise-search-log{
+#exercise-search-log {
     padding-left: 1em;
 }
-
 
 /**************************************************************
  * Workout log
@@ -166,7 +173,6 @@ div.muscle-background
     width: 7em;
 }
 
-
 /**************************************************************
  * Header
  **************************************************************/
@@ -174,7 +180,7 @@ div.muscle-background
 /*
  * Add a shadow to the application name
  */
-header h1{
+header h1 {
     text-shadow: 2px 3px 3px #292929;
     font-family: "Open Sans Bold", Arial, Helvetica, sans-serif;
     font-weight: 300;
@@ -182,52 +188,55 @@ header h1{
 
 header a,
 header a:hover,
-header a:focus{
-    color:white;
-    font-size:90%;
+header a:focus {
+    color: white;
+    font-size: 90%;
 }
 
-header span.name{
+header span.name {
     text-shadow: 2px 3px 3px #292929;
     font-family: "Open Sans Bold", Arial, Helvetica, sans-serif;
     font-weight: 300;
-    font-size:   350%;
-    color:       white;
+    font-size: 350%;
+    color: white;
 }
 
-
-header span.regular{
+header span.regular {
     text-shadow: 2px 3px 3px #292929;
     font-family: "Open Sans Light", Arial, Helvetica, sans-serif;
     font-weight: 300;
-    font-size:   350%;
-    color:       white;
+    font-size: 350%;
+    color: white;
 }
 
 /*
  * Make more space for the page title
  */
-#page-title{
+#page-title {
     margin-top: 0.5em;
 }
 
-#content-wrapper{
+#content-wrapper {
     padding-top: 0.8em;
 }
-
 
 /*
  * Links in warning boxes get a different style, the default blue doesn't match
  * well with orange
  */
-div.success a, div.success a:hover, div.success a:active,
-div.warning a, div.warning a:hover, div.warning a:active,
-div.info a, div.info a:hover, div.info a:active{
+div.success a,
+div.success a:hover,
+div.success a:active,
+div.warning a,
+div.warning a:hover,
+div.warning a:active,
+div.info a,
+div.info a:hover,
+div.info a:active {
     color: black;
     text-decoration: underline;
     background-color: transparent;
 }
-
 
 /**************************************************************
  * Autocompleter
@@ -236,12 +245,12 @@ div.info a, div.info a:hover, div.info a:active{
  * Category heading for the ajax autocompleter
  */
 .ui-autocomplete-category {
-    margin:0;
+    margin: 0;
     text-align: center;
     zoom: 1;
     width: 100%;
     font-weight: bold;
-    background-color: #D3D7CF;
+    background-color: #d3d7cf;
     border-bottom: 1px solid #888a85;
 }
 
@@ -258,17 +267,15 @@ div.info a, div.info a:hover, div.info a:active{
 /*
  * Give odd child's a different background colour (thanks CSS3!)
  */
-.ui-autocomplete li.ui-menu-item:nth-child(odd)
-{
+.ui-autocomplete li.ui-menu-item:nth-child(odd) {
     background: #eeeeec;
 }
-
 
 /**************************************************************
  * extra-bold fonts
  **************************************************************/
 
-.extra-bold{
+.extra-bold {
     font-family: "Open Sans Bold", Arial, Helvetica, sans-serif;
     font-weight: 300;
 }
@@ -276,18 +283,16 @@ div.info a, div.info a:hover, div.info a:active{
 /**************************************************************
  * Set edit window
  **************************************************************/
-#slider{
+#slider {
     width: 91%;
     float: right;
     margin-right: 1em;
 }
 
-
 /**************************************************************
  * Carousel on the feature page
  **************************************************************/
-#feature-carousel .carousel-caption
-{
+#feature-carousel .carousel-caption {
     background-color: rgba(0, 0, 0, 0.75);
     position: relative;
     left: auto;

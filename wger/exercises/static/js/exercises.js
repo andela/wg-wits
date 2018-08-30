@@ -29,7 +29,7 @@ function wgerHighlightMuscle(element) {
   var isFront;
   var divId;
   divId = $(element).data('target');
-  isFront = ($(element).data('isFront') === 'True') ? 'front' : 'back';
+  isFront = $(element).data('isFront') === 'True' ? 'front' : 'back';
   muscleId = divId.match(/\d+/);
 
   // Reset all other highlighted muscles
@@ -42,9 +42,15 @@ function wgerHighlightMuscle(element) {
   $(element).addClass('muscle-active');
 
   // Set the corresponding background
-  $('#muscle-system').css('background-image',
-    'url(/static/images/muscles/main/muscle-' + muscleId + '.svg),' +
-    'url(/static/images/muscles/muscular_system_' + isFront + '.svg)');
+  $('#muscle-system').css(
+    'background-image',
+    'url(/static/images/muscles/main/muscle-' +
+      muscleId +
+      '.svg),' +
+      'url(/static/images/muscles/muscular_system_' +
+      isFront +
+      '.svg)'
+  );
 
   // Show the corresponding exercises
   $('.exercise-list').hide();
@@ -88,7 +94,15 @@ function wgerDrawWeightLogChart(data, divId) {
       height: 200,
       legend: legend,
       target: '#svg-' + divId,
-      colors: ['#204a87', '#4e9a06', '#ce5c00', '#5c3566', '#2e3436', '8f5902', '#a40000']
+      colors: [
+        '#204a87',
+        '#4e9a06',
+        '#ce5c00',
+        '#5c3566',
+        '#2e3436',
+        '8f5902',
+        '#a40000'
+      ]
     });
   }
 }
