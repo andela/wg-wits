@@ -191,6 +191,7 @@ def add(request, pk):
                 instance.user = request.user
                 instance.workout = day.training
                 instance.date = log_date
+                instance.session = WorkoutSession.objects.get(user=request.user, date=log_date)
                 instance.save()
 
             return HttpResponseRedirect(
