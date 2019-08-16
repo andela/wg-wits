@@ -36,7 +36,7 @@ from django.core.validators import MinLengthValidator
 from django.conf import settings
 from django.db.models import Q
 
-from wger.core.models import Language
+from wger.core.models import Language, Author
 from wger.utils.helpers import smart_capitalize
 from wger.utils.managers import SubmissionManager
 from wger.utils.models import AbstractLicenseModel, AbstractSubmissionModel
@@ -356,10 +356,12 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         if request.user.has_perm('exercises.add_exercise'):
             self.status = self.STATUS_ACCEPTED
             if not self.license_author:
-                self.license_author = request.get_host().split(':')[0]
+                self.license_author, created = Author.objects.get_or_create(
+                    name=request.get_host().split(':')[0])
         else:
             if not self.license_author:
-                self.license_author = request.user.username
+                self.license_author, created = Author.objects.get_or_create(
+                    name=request.user.username)
 
             subject = _('New user submitted exercise')
             message = _(u'The user {0} submitted a new exercise "{1}".').format(
@@ -478,11 +480,13 @@ class ExerciseImage(AbstractSubmissionModel,
         if request.user.has_perm('exercises.add_exerciseimage'):
             self.status = self.STATUS_ACCEPTED
             if not self.license_author:
-                self.license_author = request.get_host().split(':')[0]
+                self.license_author, created = Author.objects.get_or_create(
+                    name=request.get_host().split(':')[0])
 
         else:
             if not self.license_author:
-                self.license_author = request.user.username
+                self.license_author, created = Author.objects.get_or_create(
+                    name=request.user.username)
 
             subject = _('New user submitted image')
             message = _(u'The user {0} submitted a new image "{1}" for exercise {2}.').format(

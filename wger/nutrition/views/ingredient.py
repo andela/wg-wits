@@ -40,6 +40,8 @@ from wger.utils.generic_views import (
 from wger.utils.constants import PAGINATION_OBJECTS_PER_PAGE
 from wger.utils.language import load_language, load_ingredient_languages
 from wger.utils.cache import cache_mapper
+from wger.nutrition.forms import IngredientForm
+from wger.core.models import Author
 
 
 logger = logging.getLogger(__name__)
@@ -94,7 +96,7 @@ def view(request, id, slug=None):
     return render(request, 'ingredient/view.html', template_data)
 
 
-class IngredientDeleteView(WgerDeleteMixin,
+class IngredientDeleteView(WgerFormMixin, WgerDeleteMixin,
                            LoginRequiredMixin,
                            PermissionRequiredMixin,
                            DeleteView):
@@ -128,30 +130,12 @@ class IngredientDeleteView(WgerDeleteMixin,
         return context
 
 
-class IngredientMixin(WgerFormMixin):
-    '''
-    Manually set the order of the fields
-    '''
-
-    fields = ['name',
-              'energy',
-              'protein',
-              'carbohydrates',
-              'carbohydrates_sugar',
-              'fat',
-              'fat_saturated',
-              'fibres',
-              'sodium',
-              'license',
-              'license_author']
-
-
-class IngredientEditView(IngredientMixin, LoginRequiredMixin,
+class IngredientEditView(WgerFormMixin, LoginRequiredMixin,
                          PermissionRequiredMixin, UpdateView):
     '''
     Generic view to update an existing ingredient
     '''
-
+    fields = '__all__'
     model = Ingredient
     form_action_urlname = 'nutrition:ingredient:edit'
     permission_required = 'nutrition.change_ingredient'
@@ -165,11 +149,11 @@ class IngredientEditView(IngredientMixin, LoginRequiredMixin,
         return context
 
 
-class IngredientCreateView(IngredientMixin, CreateView):
+class IngredientCreateView(WgerFormMixin, CreateView):
     '''
     Generic view to add a new ingredient
     '''
-
+    form_class = IngredientForm
     model = Ingredient
     title = ugettext_lazy('Add a new ingredient')
     form_action = reverse_lazy('nutrition:ingredient:add')
@@ -181,6 +165,9 @@ class IngredientCreateView(IngredientMixin, CreateView):
         form.instance.user = self.request.user
         if self.request.user.has_perm('nutrition.add_ingredient'):
             form.instance.status = Ingredient.INGREDIENT_STATUS_ADMIN
+            ingredient_author, created = Author.objects.get_or_create(
+                name=self.request.POST.get('license_author'))
+            form.instance.license_author_id = ingredient_author.id
         else:
             subject = _('New user submitted ingredient')
             message = _(u'''The user {0} submitted a new ingredient "{1}".'''.format(

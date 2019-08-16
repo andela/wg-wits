@@ -67,6 +67,9 @@ from wger.utils.widgets import (
 from wger.config.models import LanguageConfig
 from wger.weight.helpers import process_log_entries
 
+from wger.core.models import Author
+from django import forms
+
 
 logger = logging.getLogger(__name__)
 
@@ -188,6 +191,11 @@ class ExercisesEditAddView(WgerFormMixin):
             muscles_secondary = ModelMultipleChoiceField(queryset=Muscle.objects.all(),
                                                          widget=TranslatedOriginalSelectMultiple(),
                                                          required=False)
+            license_author = forms.CharField(
+                label="Author", required=False, help_text=(
+                    'If you are not the author, enter the name or '
+                    'source here. This is needed for some licenses '
+                    'e.g. the CC-BY-SA.'))
 
             class Meta:
                 model = Exercise
@@ -199,7 +207,7 @@ class ExercisesEditAddView(WgerFormMixin):
                           'muscles_secondary',
                           'equipment',
                           'license',
-                          'license_author']
+                          ]
 
             class Media:
                 js = ('/static/bower_components/tinymce/tinymce.min.js',)
@@ -237,6 +245,8 @@ class ExerciseAddView(ExercisesEditAddView, LoginRequiredMixin, CreateView):
         Set language, author and status
         '''
         form.instance.language = load_language()
+        # #create an author
+        # author = Author(name=self.request.POST.get('license_author'))
         form.instance.set_author(self.request)
         return super(ExerciseAddView, self).form_valid(form)
 
