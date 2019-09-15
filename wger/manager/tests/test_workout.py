@@ -21,6 +21,9 @@ from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase
 from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
 from wger.core.tests.base_testcase import WorkoutManagerTestCase
 from wger.manager.models import Workout
+from wger.manager.views.workout import export_user_workouts
+import tempfile
+from django.contrib.messages import get_messages
 
 
 class WorkoutShareButtonTestCase(WorkoutManagerTestCase):
@@ -121,6 +124,205 @@ class AddWorkoutTestCase(WorkoutManagerTestCase):
 
         self.user_login()
         self.create_workout()
+        self.user_logout()
+
+
+class ExportWorkoutTestCase(WorkoutManagerTestCase):
+    '''
+    Tests adding a Workout
+    '''
+
+    def create_workout(self):
+        '''
+        Helper function to test creating workouts
+        '''
+
+        # Create a workout
+        count_before = Workout.objects.count()
+        response = self.client.get(reverse('manager:workout:add'))
+        count_after = Workout.objects.count()
+
+        # There is always a redirect
+        self.assertEqual(response.status_code, 302)
+
+        # Test creating workout
+        self.assertGreater(count_after, count_before)
+
+        # Test accessing workout
+        response = self.client.get(
+            reverse('manager:workout:view', kwargs={'pk': 1}))
+
+        workout = Workout.objects.get(pk=1)
+        self.assertEqual(response.context['workout'], workout)
+        self.assertEqual(response.status_code, 200)
+
+    def export_workouts(self):
+        '''
+        Helper function to test exporting workouts
+        '''
+
+        # Export workout(s)
+        response = self.client.get(reverse('manager:workout:export'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_export_workout_logged_in(self):
+        '''
+        Test creating a workout a logged in user
+        '''
+
+        self.user_login()
+        self.create_workout()
+        self.export_workouts()
+        self.user_logout()
+
+
+class ImportWorkoutTestCase(WorkoutManagerTestCase):
+    '''
+    Tests Importing Workout(s)
+    '''
+
+    def import_workouts(self):
+        '''
+        Helper function to test importing workouts
+        '''
+        workout = [
+            {
+                "id": 1,
+                "cycle_kind": "microcycle",
+                "comment": "",
+                "creation_date": "2018-08-27",
+                "day": [
+                    {
+                        "id": 46,
+                        "description": "Run through the amazon",
+                        "daysofweek": [{"dayofweek": 1}],
+                        "sets": [
+                            {
+                                "id": 20,
+                                "sets": 4,
+                                "order": 1,
+                                "exercises": [
+                                    {
+                                        "id": 269,
+                                        "license_author": "foguinho.peruca",
+                                        "status": "2",
+                                        "description": "<p>Run on a treadmill</p>",
+                                        "name": "Run - treadmill",
+                                        "creation_date": "2014-09-03",
+                                        "uuid": "51d56238-31a1-4e5a-b747-da30eece4871",
+                                        "category": 9,
+                                        "muscles": [],
+                                        "muscles_secondary": [],
+                                        "equipment": [],
+                                        "settings": [
+                                            {
+                                                "reps": 5,
+                                                "order": 1,
+                                                "comment": "",
+                                                "weight": "1.00",
+                                                "repetition_unit_id": 6,
+                                                "weight_unit_id": 6
+                                            },
+                                            {
+                                                "reps": 5,
+                                                "order": 1,
+                                                "comment": "",
+                                                "weight": "1.00",
+                                                "repetition_unit_id": 6,
+                                                "weight_unit_id": 6
+                                            },
+                                            {
+                                                "reps": 5,
+                                                "order": 1,
+                                                "comment": "",
+                                                "weight": "1.00",
+                                                "repetition_unit_id": 6,
+                                                "weight_unit_id": 6
+                                            },
+                                            {
+                                                "reps": 5,
+                                                "order": 1,
+                                                "comment": "",
+                                                "weight": "1.00",
+                                                "repetition_unit_id": 6,
+                                                "weight_unit_id": 6
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.json')
+        with open(tmp_file.name, 'w') as f:
+            f.write(str(workout))
+
+            response = self.client.post(
+                reverse('manager:workout:overview'),
+                {'workoutfile': tmp_file},
+                format='multipart'
+            )
+            self.assertEqual(302, response.status_code)
+
+    def test_import_workout_logged_in(self):
+        '''
+        Test importing workout(s) with a logged in user
+        '''
+
+        self.user_login()
+        self.import_workouts()
+        self.user_logout()
+
+    def test_import_workout_logged_in_without_json_file(self):
+        '''
+        Test importing workout(s) with a logged in user without json file
+        '''
+
+        self.user_login()
+        response = self.client.post(reverse('manager:workout:overview'))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/en/workout/overview')
+
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+
+        # here's how you test the first message
+        self.assertEqual(all_messages[0].tags, "info")
+        self.assertEqual(all_messages[0].message, "No File was Chosen for Importation!")
+        self.user_logout()
+
+    def test_import_workout_logged_in_invalid_json(self):
+
+        self.user_login()
+
+        incorrect_json_data = [
+            {
+                "id": 1,
+                "cycle_kind": "microcycle",
+                "comment": "",
+                "creation_date": "2018-08-27",
+                "day": [
+                ],
+            }
+        ]
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.json')
+        with open(tmp_file.name, 'w') as f:
+            f.write(str(incorrect_json_data))
+
+        response = self.client.post(
+            reverse('manager:workout:overview'),
+            {'workoutfile': tmp_file},
+            format='multipart'
+        )
+        all_messages = [msg for msg in get_messages(response.wsgi_request)]
+
+        # here's how you test the first message
+        self.assertEqual(all_messages[0].tags, "info")
+        self.assertEqual(all_messages[0].message, "The Workout JSON file is invalid.")
         self.user_logout()
 
 

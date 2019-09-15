@@ -36,6 +36,48 @@
 {% endblock %}
 
 
+<!--
+    Side bar
+-->
+{% block sidebar %}
+<h4>{% trans "Export Workouts" %}</h4>
+<div class="row">
+    <div class="col-sm-3">
+        {% if workouts|length < 1 %}
+            <button class="btn btn-success" disabled type="button" >
+                Export
+            </button>
+        {% else %}
+            <a href="{% url 'manager:workout:export'%}">
+                <button class="btn btn-success" type="button">
+                    Export
+                </button>
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<br/>
+<h4>{% trans "Import Workouts" %}</h4>
+<form class="form-inline" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-sm-3">
+            <input class="btn btn-success form-control" value="Import" type="submit" />
+        </div>
+
+        <div class="col-sm-9">
+            <input type="file" name="workoutfile" class="form-control" accept=".json" />
+        </div>
+    </div>
+</form>
+
+{% if messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endif %}
+
+{% endblock %}
+
 {% block options %}
 <div class="dropdown">
     <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
