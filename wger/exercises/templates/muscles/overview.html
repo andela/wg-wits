@@ -30,8 +30,53 @@ $(document).ready(function() {
 
     // Highlight on click
 
+    //get muscle co-ordinate
+    //$('#muscle-system').mousemove(function(e){
+    //   var x = e.pageX - this.offsetLeft;
+    //   var y = e.pageY - this.offsetTop;
+    //   $('#muscle-system').html("x: " + x + " y: " + y); 
+    //});
+
+    
+
 });
+        $(window).load(function(){
+            frontImage = document.getElementById('front-img')
+            behindImage = document.getElementById('behind-img')
+            behindImage.style.visibility = "hidden";
+            
+
+        // get path attribute
+        $('object').contents().find('path').hover(function(){
+            var muscleId = this.getAttributeNS(null, 'muscle');
+            //console.log(muscleId)
+            var divId = 'muscle-' + muscleId + '';
+            if (frontImage.getAttribute('data') === '/static/images/muscles/main/front-parts.svg'){
+                var isFront = "front"
+                $('#muscle-system').css('background-image',
+                'url(/static/images/muscles/main/muscle-' + muscleId + '.svg),' +
+                'url(/static/images/muscles/muscular_system_' + isFront + '.svg)');
+                // show corresponding excercise
+                $('.exercise-list').hide();
+                $('#' + divId).show();
+            }
+            else{
+                var isFront = 'back'
+                $('#muscle-system').css('background-image',
+                'url(/static/images/muscles/main/muscle-' + muscleId + '.svg),' +
+                'url(/static/images/muscles/muscular_system_' + isFront + '.svg)');
+                // show corresponding excercise
+                $('.exercise-list').hide();
+                $('#' + divId).show();
+            }
+            
+            
+         }
+         
+    )});
+
 </script>
+
 {% endblock %}
 
 
@@ -49,11 +94,21 @@ $(document).ready(function() {
              class="muscle-background"
              style="background-image: url('/static/images/muscles/muscular_system_front.svg');">
         </div>
+        
+        <object id="front-img" class="muscle-background" type="image/svg+xml" data="/static/images/muscles/main/front-parts.svg">
+        </object>
+        <object id="behind-img" class="muscle-background" type="image/svg+xml" data="/static/images/muscles/main/behind-parts.svg">
+        </object>
+        
+        
+
+
     </div>
     <div class="col-sm-4 col-xs-6">
         {# Why do we need to use |first? #}
         {% regroup muscle_list|first by is_front as muscle_group %}
         {% for group in muscle_group %}
+            
             {% if group.grouper %}
                 <h4>{% trans "Front side" %}</h4>
             {% else %}
