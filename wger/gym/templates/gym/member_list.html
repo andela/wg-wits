@@ -416,8 +416,18 @@
 {#         #}
 {% block options %}
 {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
-    <a href="{% url 'gym:gym:add-user' gym.pk %}" class="btn btn-success btn-sm wger-modal-dialog">
-        {% trans "Add member" %}
-    </a>
+<div class="btn-group pull-right">
+    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+        {% trans "Add Member" %} <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{% url 'gym:gym:add-user' gym.pk %}" class="wger-modal-dialog">{% trans "New User"%}</a>
+        </li>
+        <li>
+            <a href="{% url 'gym:gym:add-user-existing' gym.pk %}" class="wger-modal-dialog">{% trans "Existing User"%}</a>
+        </li>
+    </ul>
+</div>
 {% endif %}
 {% endblock %}

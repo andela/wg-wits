@@ -20,6 +20,8 @@ from django.utils.translation import ugettext as _
 
 from wger.core.forms import UserPersonalInformationForm
 from wger.utils.widgets import BootstrapSelectMultiple
+from wger.gym.models import GymAdminConfig
+from django.db.utils import IntegrityError
 
 
 class GymUserPermisssionForm(forms.ModelForm):
@@ -91,3 +93,41 @@ class GymUserAddForm(GymUserPermisssionForm, UserPersonalInformationForm):
             return username
         raise forms.ValidationError(
             _("A user with that username already exists."))
+
+
+class GymAddExistingUserForm(GymUserPermisssionForm):
+    '''
+    Form used when adding a user to a gym
+    '''
+
+    class Meta:
+        model = GymAdminConfig
+        widgets = {'role': BootstrapSelectMultiple()}
+        fields = ('username', 'role',)
+
+    username = forms.RegexField(label=_("Username"),
+                                max_length=30,
+                                regex=r'^[\w.@+-]+$',
+                                help_text=_("Required. 30 characters or fewer. Letters, digits and "
+                                            "@/./+/-/_ only."),
+                                error_messages={
+                                'invalid': _("This value may contain only letters, numbers and "
+                                             "@/.//-/_ characters.")})
+
+    def clean_username(self):
+        '''
+        Since User.username is unique, this check is redundant,
+        but it sets a nicer error message than the ORM. See #13147.
+        '''
+        username = self.cleaned_data["username"]
+        try:
+            user = User._default_manager.get(username=username)
+        except User.DoesNotExist:
+            raise forms.ValidationError(
+                _("Username does not exists."))
+
+        if user.userprofile.gym_id is not None:
+            raise forms.ValidationError(
+                _(str(username) + " already belongs to a gym."))
+
+        return username

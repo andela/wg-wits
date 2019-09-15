@@ -39,7 +39,11 @@ from django.views.generic import (
     UpdateView
 )
 
-from wger.gym.forms import GymUserAddForm, GymUserPermisssionForm
+from wger.gym.forms import (
+    GymUserAddForm,
+    GymAddExistingUserForm,
+    GymUserPermisssionForm
+)
 from wger.gym.helpers import (
     get_user_last_activity,
     is_any_gym_admin,
@@ -179,12 +183,15 @@ def delete_user(request, user_pk):
 
     user_matched = GymUserConfig.objects.filter(user_id=member.id).first() or \
         GymAdminConfig.objects.filter(user_id=member.id).first()
+    gym_id = user_matched.gym_id
 
     if user_matched:
         member = User.objects.filter(pk=user_pk).first()
-        member.delete()
+        member.userprofile.gym_id = None
+        member.userprofile.save()
+        user_matched.delete()
 
-    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': user_matched.gym_id}))
+    return HttpResponseRedirect(reverse("gym:gym:user-list", kwargs={'pk': gym_id}))
 
 
 @login_required()
@@ -359,8 +366,8 @@ class GymAddUserView(WgerFormMixin,
     View to add a user to a new gym
     '''
 
-    model = User
-    title = ugettext_lazy('Add user to gym')
+    model = GymAdminConfig
+    title = ugettext_lazy('Add new user to gym')
     success_url = reverse_lazy('gym:gym:new-user-data')
     permission_required = ('gym.manage_gym', 'gym.manage_gyms')
     form_class = GymUserAddForm
@@ -446,6 +453,69 @@ class GymAddUserView(WgerFormMixin,
         '''
         context = super(GymAddUserView, self).get_context_data(**kwargs)
         context['form_action'] = reverse('gym:gym:add-user',
+                                         kwargs={'gym_pk': self.kwargs['gym_pk']})
+        return context
+
+
+class GymAddExistingUserView(GymAddUserView):
+    '''
+       View to add a user to a new gym
+       '''
+
+    model = GymAdminConfig
+    title = ugettext_lazy('Add existing user to gym')
+    success_url = reverse_lazy('gym:gym:new-user-data')
+    permission_required = ('gym.manage_gym', 'gym.manage_gyms')
+    form_class = GymAddExistingUserForm
+
+    def form_valid(self, form):
+        '''
+        Create the user, set the user permissions and gym
+        '''
+        permissions = ['gym_member', 'gym_trainer', 'gym_manager', 'general_gym_manager']
+        gym = Gym.objects.get(pk=self.kwargs['gym_pk'])
+        user = User.objects.filter(username=form.cleaned_data['username']).first()
+        form.instance = user
+
+        # Update profile
+        user.userprofile.gym = gym
+        user.userprofile.save()
+
+        # Remove all previously set permissions
+        for perm in permissions:
+            user.groups.remove(Group.objects.get(name=str(perm)))
+
+        # Set appropriate permission groups
+        if 'user' in form.cleaned_data['role']:
+            user.groups.add(Group.objects.get(name='gym_member'))
+        if 'trainer' in form.cleaned_data['role']:
+            user.groups.add(Group.objects.get(name='gym_trainer'))
+        if 'admin' in form.cleaned_data['role']:
+            user.groups.add(Group.objects.get(name='gym_manager'))
+        if 'manager' in form.cleaned_data['role']:
+            user.groups.add(Group.objects.get(name='general_gym_manager'))
+
+        self.request.session['gym.user'] = {'user_pk': user.pk,
+                                            'password': '-/-'}
+
+        # Create config
+        if is_any_gym_admin(user):
+            config = GymAdminConfig()
+        else:
+            config = GymUserConfig()
+
+        config.user = user
+        config.gym = gym
+        config.save()
+
+        return super(GymAddUserView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        '''
+        Send some additional data to the template
+        '''
+        context = super(GymAddExistingUserView, self).get_context_data(**kwargs)
+        context['form_action'] = reverse('gym:gym:add-user-existing',
                                          kwargs={'gym_pk': self.kwargs['gym_pk']})
         return context
 
