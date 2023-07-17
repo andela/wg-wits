@@ -28,7 +28,7 @@ social-auth-app-django==2.1.0
 
 # REST API
 djangorestframework>=3.2,<3.3
-django-filter==1.1.0
+django-filter==2.4.0
 django-tastypie
 django-cors-headers
 
